@@ -3,6 +3,7 @@ import "../App.css";
 import { Header } from "./Header";
 import { Search } from "./Search";
 import { Movie } from "./Movie";
+
 export interface MovieObject {
   Title: string;
   Type: string;
@@ -61,6 +62,7 @@ export const App: React.FunctionComponent = () => {
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [searchValue, setSearchValue] = useState("");
+  const UserContext = React.createContext("");
   const [state, dispatch] = useReducer(reducer, initialState);
   const search = (searchValue: string) => {
     dispatch({
@@ -128,6 +130,7 @@ export const App: React.FunctionComponent = () => {
   console.log(createMoviesDivs());
   return (
     <div className="App">
+      <UserContext.Provider value={"none"} />
       <Header text="HookedType" />
       <Search search={search} />
       <p className="App-intro">Sharing a few of our favorite movies</p>

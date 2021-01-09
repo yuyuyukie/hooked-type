@@ -14,8 +14,7 @@
   padding: 20px;
   cursor: pointer;
 }
-
-.spinner {
+.App-header .spinner {
   height: 80px;
   margin: auto;
 }
