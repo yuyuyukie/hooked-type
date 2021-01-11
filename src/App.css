@@ -1,18 +1,57 @@
 .App {
   text-align: center;
 }
+.hidden {
+  display: none;
+}
+.Modal {
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.76);
+}
+.Modal div {
+  border: 1px rgb(0, 0, 0);
+  background: rgb(236, 236, 236);
+  border-radius: 0.5rem;
+}
 
 .App-header {
   background-color: #282c34;
   height: 70px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding: 20px;
+  cursor: default;
+}
+/* 厳密に真ん中じゃない */
+.App-header h1 {
+  margin-left: auto;
+}
+.App-header > div {
+  margin: 2% 1% 2% auto;
+  display: flex;
+  height: 100%;
+}
+.App-header button {
+  box-sizing: border-box;
+  height: 45%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
   cursor: pointer;
+  flex: 1;
+  padding: 0 1.5rem;
 }
 .App-header .spinner {
   height: 80px;

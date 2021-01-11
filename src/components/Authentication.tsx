@@ -1,21 +1,12 @@
+import firebase from "firebase";
 import React from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import firebase from "../firebase";
+import { StyledFirebaseAuth } from "react-firebaseui";
+import { uiConfig } from "../firebase/uiConfig";
 
-const uiConfig = {
-  // Identity Providerログイン：redirect or popup
-  signInFlow: "popup",
-  signInSuccessUrl: "/",
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  ],
-};
+type Props = {};
 
-export const Authentication: React.VoidFunctionComponent = (): JSX.Element => {
-  const firebaseuiDiv = (
+export const Authentication: React.FC<Props> = () => {
+  return (
     <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
   );
-
-  return <div id="Authentication-container">{firebaseuiDiv}</div>;
 };

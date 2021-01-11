@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Props } from "./App";
+
+type Props = {
+  search: (searchValue: string) => void;
+};
+
 export const Search: React.FunctionComponent<Props> = (
   props: Props
 ): JSX.Element => {

@@ -1,8 +1,11 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import "../App.css";
 import { Header } from "./Header";
 import { Search } from "./Search";
 import { Movie } from "./Movie";
+import firebase from "../firebase";
+// react context for firebase users
+// import firebase from "firebase";
 
 export interface MovieObject {
   Title: string;
@@ -12,7 +15,10 @@ export interface MovieObject {
   imdbID: string;
 }
 export type Props = {
-  search: (searchValue: string) => void;
+  search?: (searchValue: string) => void;
+  text?: string;
+  userState?: firebase.User | null;
+  setUserState?: React.Dispatch<React.SetStateAction<firebase.User | null>>;
 };
 
 const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
@@ -62,8 +68,25 @@ export const App: React.FunctionComponent = () => {
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [searchValue, setSearchValue] = useState("");
-  const UserContext = React.createContext("");
+  // function userReducer(state: undefined|firebase.User, action: any):undefined|firebase.User {
+  //   if (state) {
+  //     return state;
+  //   }else {
+  //     return;
+  //   }
+  // }
+  // const [userState, userDispatch] = useReducer(userReducer, {});
+  const [userState, setUserState] = useState<firebase.User | null>(null);
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setUserState(user);
+    } else {
+      setUserState(null);
+    }
+  });
   const [state, dispatch] = useReducer(reducer, initialState);
+  // userがログイン
+  const [isShowModal, toggleShowModal] = useState<boolean>(false);
   const search = (searchValue: string) => {
     dispatch({
       type: "SEARCH_MOVIES_REQUEST",
@@ -130,8 +153,13 @@ export const App: React.FunctionComponent = () => {
   console.log(createMoviesDivs());
   return (
     <div className="App">
-      <UserContext.Provider value={"none"} />
-      <Header text="HookedType" />
+      <Header
+        text="HookedType"
+        userState={userState}
+        setUserState={setUserState}
+        isShowModal={isShowModal}
+        toggleShowModal={toggleShowModal}
+      />
       <Search search={search} />
       <p className="App-intro">Sharing a few of our favorite movies</p>
       <div className="movies">{createMoviesDivs()}</div>
