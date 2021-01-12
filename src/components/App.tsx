@@ -6,6 +6,7 @@ import { Movie } from "./Movie";
 import firebase from "../firebase";
 // react context for firebase users
 // import firebase from "firebase";
+const db = firebase.firestore();
 
 export interface MovieObject {
   Title: string;
@@ -84,8 +85,9 @@ export const App: React.FunctionComponent = () => {
       setUserState(null);
     }
   });
+  // fetch movieのreducer
   const [state, dispatch] = useReducer(reducer, initialState);
-  // userがログイン
+  // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
   const search = (searchValue: string) => {
     dispatch({
