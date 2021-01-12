@@ -7,6 +7,11 @@ type Props = {};
 
 export const Authentication: React.FC<Props> = () => {
   return (
-    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    <div id="Authenticaion">
+      <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
+        Select the option <br></br>to sign in/up.
+      </p>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    </div>
   );
 };

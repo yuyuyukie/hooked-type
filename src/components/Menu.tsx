@@ -50,16 +50,7 @@ export const Menu: React.FC<Props> = (props): JSX.Element => {
               props.toggleShowModal(!props.isShowModal);
             }}
           >
-            Sign in
-          </button>
-          <button
-            type="button"
-            id="SignUpButton"
-            onClick={() => {
-              props.toggleShowModal(!props.isShowModal);
-            }}
-          >
-            Sign up
+            Sign in/up
           </button>
         </div>
       );
