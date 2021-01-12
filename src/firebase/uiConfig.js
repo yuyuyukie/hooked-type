@@ -4,7 +4,9 @@ export const uiConfig = {
   signInFlow: "popup",
   signInSuccessUrl: "/",
   signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    {
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    },
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   ],
 };

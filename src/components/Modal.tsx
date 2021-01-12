@@ -10,8 +10,10 @@ export const Modal: React.FC<Props> = (props) => {
   const modalContainer = document.createElement("div");
   useEffect(() => {
     modalContainer.classList.add("Modal");
-    modalContainer.onclick = () => {
-      props.toggleShowModal(false);
+    modalContainer.onclick = (e) => {
+      if (e.target === modalContainer) {
+        props.toggleShowModal(false);
+      }
     };
     modalRoot?.appendChild(modalContainer);
     // clean up
@@ -22,7 +24,6 @@ export const Modal: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!modalRoot) {
-    console.log("modal is null");
     return null;
   }
   return ReactDOM.createPortal(props.children, modalContainer);
