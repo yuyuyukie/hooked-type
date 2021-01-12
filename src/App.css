@@ -22,7 +22,7 @@
   border-radius: 0.5rem;
 }
 
-.App-header {
+.Header {
   background-color: #282c34;
   height: 70px;
   display: flex;
@@ -34,15 +34,15 @@
   cursor: default;
 }
 /* 厳密に真ん中じゃない */
-.App-header h1 {
+.Header h1 {
   margin-left: auto;
 }
-.App-header > div {
+.Header > div {
   margin: 2% 1% 2% auto;
   display: flex;
   height: 100%;
 }
-.App-header button {
+.Header button {
   box-sizing: border-box;
   height: 45%;
   width: 100%;
@@ -53,7 +53,7 @@
   flex: 1;
   padding: 0 1.5rem;
 }
-.App-header .spinner {
+.Header .spinner {
   height: 80px;
   margin: auto;
 }
@@ -74,7 +74,7 @@
   flex-direction: row;
 }
 
-.App-header h2 {
+.Header h2 {
   margin: 0;
 }
 
@@ -88,7 +88,7 @@
   margin: 0 10px 30px 10px;
 }
 
-.movie {
+.Movie {
   padding: 5px 25px 10px 25px;
   max-width: 25%;
 }
@@ -99,7 +99,7 @@
   color: rgb(161, 15, 15);
 }
 
-.search {
+.Search {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -122,25 +122,25 @@ input[type="submit"]:hover {
   color: antiquewhite;
 }
 
-.search > input[type="text"] {
+.Search > input[type="text"] {
   width: 40%;
   min-width: 170px;
 }
 
 @media screen and (min-width: 694px) and (max-width: 915px) {
-  .movie {
+  .Movie {
     max-width: 33%;
   }
 }
 
 @media screen and (min-width: 652px) and (max-width: 693px) {
-  .movie {
+  .Movie {
     max-width: 50%;
   }
 }
 
 @media screen and (max-width: 651px) {
-  .movie {
+  .Movie {
     max-width: 100%;
     margin: auto;
   }

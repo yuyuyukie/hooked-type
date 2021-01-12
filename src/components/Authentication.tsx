@@ -7,7 +7,7 @@ type Props = {};
 
 export const Authentication: React.FC<Props> = () => {
   return (
-    <div id="Authenticaion">
+    <div className="Authenticaion">
       <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
         Select the option <br></br>to sign in/up.
       </p>

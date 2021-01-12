@@ -15,7 +15,7 @@ export const Movie: React.FunctionComponent<Props> = (
   const poster =
     movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
   return (
-    <div className="movie">
+    <div className="Movie">
       <h2>{movie.Title}</h2>
       <div>
         <img

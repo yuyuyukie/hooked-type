@@ -14,7 +14,7 @@ export const Header: React.FunctionComponent<Props> = (
   props: Props
 ): JSX.Element => {
   return (
-    <header className="App-header">
+    <header className="Header">
       <h1>{props.text}</h1>
       <Menu
         toggleShowModal={props.toggleShowModal}

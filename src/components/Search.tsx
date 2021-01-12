@@ -24,7 +24,7 @@ export const Search: React.FunctionComponent<Props> = (
     resetInputField();
   };
   return (
-    <form className="search">
+    <form className="Search">
       <input
         value={searchValue}
         onChange={handleSearchInputChanges}

@@ -68,7 +68,7 @@ export const Menu: React.FC<Props> = (props): JSX.Element => {
   };
 
   return (
-    <div id="Authentication-container">
+    <div id="Menu">
       {firebaseuiDiv(props.userState)}
       {modal(props.isShowModal)}
     </div>
