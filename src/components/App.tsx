@@ -4,16 +4,19 @@ import { Header } from "./Header";
 import { Search } from "./Search";
 import { Movie } from "./Movie";
 import firebase from "../firebase";
+import { FavoriteMode, isMovieObject } from "./FavoriteMode";
 // react context for firebase users
 // import firebase from "firebase";
-const db = firebase.firestore();
 
+const auth = firebase.auth();
+const db = firebase.firestore();
 export interface MovieObject {
   Title: string;
   Type: string;
   Poster: string;
   Year: string;
   imdbID: string;
+  favorite?: boolean;
 }
 export type Props = {
   search?: (searchValue: string) => void;
@@ -62,6 +65,17 @@ function reducer(state: State, action: ACTIONTYPE) {
       throw new Error();
   }
 }
+enum Mode {
+  Search,
+  Favorite,
+}
+export const movieDivFactory = (movies: MovieObject[]): JSX.Element[] => {
+  return movies.map(
+    (movie: MovieObject, index: number): JSX.Element => {
+      return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
+    }
+  );
+};
 
 export const App: React.FunctionComponent = () => {
   // const [loading, setLoading] = useState(true);
@@ -78,9 +92,21 @@ export const App: React.FunctionComponent = () => {
   // }
   // const [userState, userDispatch] = useReducer(userReducer, {});
   const [userState, setUserState] = useState<firebase.User | null>(null);
-  firebase.auth().onAuthStateChanged((user) => {
+  auth.onAuthStateChanged((user) => {
     if (user) {
       setUserState(user);
+      db.collection("users")
+        .doc(user.uid)
+        .set(
+          {
+            displayName: user.displayName,
+            email: user.email,
+            uid: user.uid,
+          },
+          { merge: true }
+        )
+        .then(() => console.log("user info has been written to the database"))
+        .catch((e) => console.error("database write error", e));
     } else {
       setUserState(null);
     }
@@ -89,10 +115,29 @@ export const App: React.FunctionComponent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
+  const [mode, setMode] = useState<Mode>(Mode.Search);
   const search = (searchValue: string) => {
     dispatch({
       type: "SEARCH_MOVIES_REQUEST",
     });
+    // // firestoreにも検索をかける
+    // const searchFavMoviesFromDB = (
+    //   searchValue: string,
+    //   user: firebase.User,
+    //   db: firebase.firestore.Firestore
+    // ) => {
+    //   db.collection("users").doc(user.uid).collection("favoriteMovies").get().then((snapshot) => {
+    //     snapshot.forEach(doc => {
+    //       const movie = doc.data();
+    //       if (isMovieObject(movie)) {
+
+    //       }
+    //     })
+    //   })
+    // };
+    // if (userState) {
+    //   searchFavMoviesFromDB(searchValue, userState, db);
+    // }
     // setLoading(true);
     // setErrorMessage(null);
     const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
@@ -120,7 +165,6 @@ export const App: React.FunctionComponent = () => {
         });
         // setMovies(JSONResponse.Search);
         // setLoading(false);
-        console.log(JSONResponse);
       } else {
         dispatch({
           type: "SEARCH_MOVIES_FAILURE",
@@ -138,21 +182,14 @@ export const App: React.FunctionComponent = () => {
   }, []);
 
   const { movies, errorMessage, loading } = state;
-  const createMoviesDivs = () => {
+  const showMovies = (movies: MovieObject[]) => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
     } else if (loading) {
       return <span>loading...</span>;
     }
-    if (movies != null) {
-      return movies.map(
-        (movie: MovieObject, index: number): JSX.Element => {
-          return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
-        }
-      );
-    }
+    return movieDivFactory(movies);
   };
-  console.log(createMoviesDivs());
   return (
     <div className="App">
       <Header
@@ -162,9 +199,33 @@ export const App: React.FunctionComponent = () => {
         isShowModal={isShowModal}
         toggleShowModal={toggleShowModal}
       />
-      <Search search={search} />
-      <p className="App-intro">Sharing a few of our favorite movies</p>
-      <div className="movies">{createMoviesDivs()}</div>
+      <ul className="modeSelector">
+        テスト用なのでサイドバーに置換予定
+        <li
+          className="search"
+          onClick={() => {
+            setMode(Mode.Search);
+          }}
+        >
+          Search
+        </li>
+        <li
+          className="favorite"
+          onClick={() => {
+            setMode(Mode.Favorite);
+          }}
+        >
+          Favorite
+        </li>
+      </ul>
+      {mode === Mode.Search ? (
+        <div className="mainContainer">
+          <Search search={search} />
+          <div className="moviesContainer">{showMovies(movies)}</div>
+        </div>
+      ) : (
+        <FavoriteMode userState={userState} />
+      )}
     </div>
   );
 };
