@@ -1,11 +1,8 @@
 import React, { useReducer, useEffect, useState, useContext } from "react";
 import "../App.css";
 import Header from "./Header";
-import Search from "./Search";
 import Movie from "./Movie";
-import firebase, { firebaseApp } from "../firebase";
 import FavoriteMode from "./FavoriteMode";
-import { AuthContext } from "./AuthProvider";
 import Main from "./Main";
 import SearchMode from "./SearchMode";
 // react context for firebase users
@@ -40,6 +37,10 @@ const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
   const [mode, setMode] = useState<Mode>(Mode.Search);
+  const modeSelectorStyle = {
+    backgroundColor: "#282c34",
+    color: "#eeeeee",
+  };
 
   return (
     <div className="App">
@@ -49,9 +50,9 @@ const App: React.FunctionComponent = () => {
         toggleShowModal={toggleShowModal}
       />
       <ul className="modeSelector">
-        テスト用なのでサイドバーに置換予定
         <li
           className="search"
+          style={mode === Mode.Search ? modeSelectorStyle : {}}
           onClick={() => {
             setMode(Mode.Search);
           }}
@@ -60,6 +61,7 @@ const App: React.FunctionComponent = () => {
         </li>
         <li
           className="favorite"
+          style={mode === Mode.Favorite ? modeSelectorStyle : {}}
           onClick={() => {
             setMode(Mode.Favorite);
           }}
@@ -67,8 +69,7 @@ const App: React.FunctionComponent = () => {
           Favorite
         </li>
       </ul>
-      <SearchMode isVisible={mode === Mode.Search} />
-      <FavoriteMode isVisible={mode === Mode.Favorite} />
+      <Main mode={mode} />
     </div>
   );
 };

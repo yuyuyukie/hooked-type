@@ -76,11 +76,11 @@ const SearchMode: React.FC<Props> = (props) => {
     search("man");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  if (!props.isVisible) {
+    return <div className="moviesContainer" />;
+  }
   const { movies, errorMessage, loading } = state;
   const showMovies = (movies: MovieObject[]) => {
-    if (!props.isVisible) {
-      return <div className="moviesContainer" />;
-    }
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
     }

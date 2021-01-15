@@ -1,0 +1,35 @@
+Date : 2021-01-15 10:53:00
+Directory : c:\Users\zx275\Documents\WebApplications\hooked-type\src\components
+Total : 11 files,  527 codes, 15 comments, 34 blanks, all 576 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| TypeScript React |         11 |        527 |         15 |         34 |        576 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                   | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                      |         11 |        527 |         15 |         34 |        576 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                               | language         | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\App.tsx            | TypeScript React |         64 |          3 |          6 |         73 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\AppContext.tsx     | TypeScript React |         11 |          0 |          1 |         12 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\AuthProvider.tsx   | TypeScript React |         38 |          0 |          2 |         40 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Authentication.tsx | TypeScript React |         16 |          0 |          3 |         19 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\FavoriteMode.tsx   | TypeScript React |         67 |          3 |          4 |         74 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Header.tsx         | TypeScript React |         20 |          0 |          3 |         23 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Menu.tsx           | TypeScript React |         71 |          3 |          4 |         78 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Modal.tsx          | TypeScript React |         27 |          3 |          2 |         32 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Movie.tsx          | TypeScript React |         85 |          2 |          2 |         89 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\Search.tsx         | TypeScript React |         33 |          0 |          3 |         36 |
+| c:\Users\zx275\Documents\WebApplications\hooked-type\src\components\SearchMode.tsx     | TypeScript React |         95 |          1 |          4 |        100 |
+| Total                                                                                  |                  |        527 |         15 |         34 |        576 |
++----------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

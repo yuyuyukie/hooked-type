@@ -100,7 +100,7 @@ html {
 }
 .Modal div {
   border: 1px rgb(0, 0, 0);
-  background: rgb(236, 236, 236);
+  background: #eeeeee;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
 }
@@ -133,16 +133,53 @@ html {
   box-sizing: border-box;
   height: 45%;
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgb(255, 255, 255);
+  background: #0f1419;
+  color: #eeeeee;
   font-size: 1rem;
   cursor: pointer;
   flex: 1;
   padding: 0 1.5rem;
+  transition: all 0.2s linear;
+}
+.Header button:hover {
+  background: #ffffffbf;
+  color: #0f1419;
 }
 .Header .spinner {
   height: 80px;
   margin: auto;
+}
+/* | Menu, Auth */
+.signinOption {
+  cursor: pointer;
+  padding: 0.5rem 4rem 0.5rem 1rem;
+  list-style-type: none;
+  border: 1px solid #0f1419;
+  border-radius: 3px 3px 3px 3px;
+  transition-property: border-radius, background-color;
+  transition-delay: 1ms;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+}
+.signinOption:hover {
+  background-color: #697691;
+  border-radius: 3px 3px 25px 3px;
+}
+/* | ModeSelector */
+.modeSelector {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+.modeSelector > li {
+  cursor: pointer;
+  flex: 1;
+  border: 1px #282c34 solid;
+  transition: all linear 0.2s;
+}
+.modeSelector > li:hover {
+  background-color: #282c34;
+  color: #eeeeee;
 }
 
 /* | Search周り */
@@ -172,7 +209,7 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #282c34;
-  color: antiquewhite;
+  color: #eeeeee;
 }
 
 .Search > input[type="text"] {
@@ -218,11 +255,12 @@ input[type="submit"]:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
+  transition: all linear 0.1s;
 }
 .favoriteBtn:hover {
   background: #e024607c;
   color: #e0245e7c;
-  border-radius: 50%;
 }
 
 /* | レスポンシブ */

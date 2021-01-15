@@ -11,7 +11,7 @@ type Props = {
 
 const Menu: React.FC<Props> = (props): JSX.Element => {
   const currentUser = useContext(AuthContext);
-  const firebaseuiDiv = (user: firebase.User | null | undefined) => {
+  const createMenu = (user: firebase.User | null | undefined) => {
     // Login時
     if (user) {
       return (
@@ -60,7 +60,7 @@ const Menu: React.FC<Props> = (props): JSX.Element => {
     if (bool) {
       return (
         <Modal toggleShowModal={props.toggleShowModal}>
-          <Authentication />
+          <Authentication toggleShowModal={props.toggleShowModal} />
         </Modal>
       );
     }
@@ -68,7 +68,7 @@ const Menu: React.FC<Props> = (props): JSX.Element => {
 
   return (
     <div id="Menu">
-      {firebaseuiDiv(currentUser)}
+      {createMenu(currentUser)}
       {modal(props.isShowModal)}
     </div>
   );

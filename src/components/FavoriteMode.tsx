@@ -42,6 +42,9 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     }
   }, [currentUser]);
 
+  if (!props.isVisible) {
+    return <div className="favoriteMoviesContainer" />;
+  }
   if (!currentUser) {
     return (
       <div className="notLoggedInMessage" style={{ fontSize: "1.5rem" }}>
@@ -53,9 +56,6 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     movies.forEach((movie) => {
       movie.favorite = true;
     });
-    if (!props.isVisible) {
-      return <div className="favoriteMoviesContainer" />;
-    }
     if (loading) {
       return <span>loading...</span>;
     }
