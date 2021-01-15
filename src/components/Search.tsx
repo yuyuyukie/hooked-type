@@ -4,9 +4,7 @@ type Props = {
   search: (searchValue: string) => void;
 };
 
-export const Search: React.FunctionComponent<Props> = (
-  props: Props
-): JSX.Element => {
+const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -34,3 +32,4 @@ export const Search: React.FunctionComponent<Props> = (
     </form>
   );
 };
+export default Search;

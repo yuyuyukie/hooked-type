@@ -1,15 +1,15 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState, useContext } from "react";
 import "../App.css";
-import { Header } from "./Header";
-import { Search } from "./Search";
-import { Movie } from "./Movie";
-import firebase from "../firebase";
-import { FavoriteMode, isMovieObject } from "./FavoriteMode";
+import Header from "./Header";
+import Search from "./Search";
+import Movie from "./Movie";
+import firebase, { firebaseApp } from "../firebase";
+import FavoriteMode from "./FavoriteMode";
+import { AuthContext } from "./AuthProvider";
+import Main from "./Main";
 // react context for firebase users
 // import firebase from "firebase";
 
-const auth = firebase.auth();
-const db = firebase.firestore();
 export interface MovieObject {
   Title: string;
   Type: string;
@@ -21,8 +21,6 @@ export interface MovieObject {
 export type Props = {
   search?: (searchValue: string) => void;
   text?: string;
-  userState?: firebase.User | null;
-  setUserState?: React.Dispatch<React.SetStateAction<firebase.User | null>>;
 };
 
 const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
@@ -65,7 +63,7 @@ function reducer(state: State, action: ACTIONTYPE) {
       throw new Error();
   }
 }
-enum Mode {
+export enum Mode {
   Search,
   Favorite,
 }
@@ -77,7 +75,7 @@ export const movieDivFactory = (movies: MovieObject[]): JSX.Element[] => {
   );
 };
 
-export const App: React.FunctionComponent = () => {
+const App: React.FunctionComponent = () => {
   // const [loading, setLoading] = useState(true);
   // const [movies, setMovies] = useState<MovieObject[]>([]);
   // const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -91,26 +89,7 @@ export const App: React.FunctionComponent = () => {
   //   }
   // }
   // const [userState, userDispatch] = useReducer(userReducer, {});
-  const [userState, setUserState] = useState<firebase.User | null>(null);
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      setUserState(user);
-      db.collection("users")
-        .doc(user.uid)
-        .set(
-          {
-            displayName: user.displayName,
-            email: user.email,
-            uid: user.uid,
-          },
-          { merge: true }
-        )
-        .then(() => console.log("user info has been written to the database"))
-        .catch((e) => console.error("database write error", e));
-    } else {
-      setUserState(null);
-    }
-  });
+  const currentUser = useContext(AuthContext);
   // fetch movieのreducer
   const [state, dispatch] = useReducer(reducer, initialState);
   // 認証画面の表示状態
@@ -194,8 +173,6 @@ export const App: React.FunctionComponent = () => {
     <div className="App">
       <Header
         text="HookedType"
-        userState={userState}
-        setUserState={setUserState}
         isShowModal={isShowModal}
         toggleShowModal={toggleShowModal}
       />
@@ -218,14 +195,17 @@ export const App: React.FunctionComponent = () => {
           Favorite
         </li>
       </ul>
+      <Main mode={mode} />
       {mode === Mode.Search ? (
         <div className="mainContainer">
           <Search search={search} />
           <div className="moviesContainer">{showMovies(movies)}</div>
         </div>
       ) : (
-        <FavoriteMode userState={userState} />
+        <FavoriteMode />
       )}
     </div>
   );
 };
+
+export default App;

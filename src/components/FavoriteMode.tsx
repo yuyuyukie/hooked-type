@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import firebase from "../firebase";
+import React, { useContext, useEffect, useState } from "react";
+import firebase, { firebaseApp } from "../firebase";
 import { movieDivFactory, MovieObject } from "./App";
-const db = firebase.firestore();
+import { AuthContext } from "./AuthProvider";
+const db = firebaseApp.firestore();
 
 export const isMovieObject = (obj: any): obj is MovieObject => {
   return (
@@ -13,19 +14,19 @@ export const isMovieObject = (obj: any): obj is MovieObject => {
   );
 };
 
-type Props = { userState: firebase.User | null };
-export const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
+type Props = {};
+const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
   // ログインしてないなら説明＋誘導
-  const user: firebase.User | null = props.userState;
+  const currentUser = useContext(AuthContext);
   // asyncのため更新検知
   const [loading, setLoading] = useState<boolean>(false);
   const [favMovies, setFavMovies] = useState<MovieObject[]>([]);
   // async の購読解除、アップデート用
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       const favMoviesRef = db
         .collection("users")
-        .doc(user.uid)
+        .doc(currentUser.uid)
         .collection("favoriteMovies");
       setLoading(true);
       favMoviesRef.get().then((snapshot) => {
@@ -39,9 +40,9 @@ export const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
         setLoading(false);
       });
     }
-  }, [user]);
+  }, [currentUser]);
 
-  if (!user) {
+  if (!currentUser) {
     return (
       <div className="notLoggedInMessage" style={{ fontSize: "1.5rem" }}>
         We need you to "Sign in" to use this functionality.
@@ -49,13 +50,14 @@ export const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     );
   }
   const createFavMovieDiv = (movies: MovieObject[], loading: boolean) => {
-    console.log(movies);
+    movies.forEach((movie) => {
+      movie.favorite = true;
+    });
     if (loading) {
       return <span>loading...</span>;
     }
     return movieDivFactory(movies);
   };
-  console.log(favMovies);
   return (
     <React.Fragment>
       <div className="toolbox" />
@@ -65,3 +67,4 @@ export const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     </React.Fragment>
   );
 };
+export default FavoriteMode;

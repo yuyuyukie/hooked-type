@@ -5,7 +5,7 @@ import { uiConfig } from "../firebase/uiConfig";
 
 type Props = {};
 
-export const Authentication: React.FC<Props> = () => {
+const Authentication: React.FC<Props> = () => {
   return (
     <div className="Authenticaion">
       <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
@@ -15,3 +15,4 @@ export const Authentication: React.FC<Props> = () => {
     </div>
   );
 };
+export default Authentication;

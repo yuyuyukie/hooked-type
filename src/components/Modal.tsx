@@ -5,7 +5,7 @@ type Props = {
   toggleShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const Modal: React.FC<Props> = (props) => {
+const Modal: React.FC<Props> = (props) => {
   const modalRoot = document.querySelector("#modal-root");
   const modalContainer = document.createElement("div");
   useEffect(() => {
@@ -28,3 +28,4 @@ export const Modal: React.FC<Props> = (props) => {
   }
   return ReactDOM.createPortal(props.children, modalContainer);
 };
+export default Modal;

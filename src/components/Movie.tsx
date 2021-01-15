@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { MovieObject } from "./App";
-import firebase from "../firebase";
-const db = firebase.firestore();
+import firebase, { firebaseApp } from "../firebase";
+import { AuthContext } from "./AuthProvider";
+const db = firebaseApp.firestore();
 
 type Props = {
   key: string;
@@ -10,9 +11,8 @@ type Props = {
 // OMDbAPIにタイトル画像がなかったときに差し替えて表示する画像
 const DEFAULT_PLACEHOLDER_IMAGE: string =
   "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg";
-export const Movie: React.FunctionComponent<Props> = (
-  props: Props
-): JSX.Element => {
+const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
+  const currentUser = useContext(AuthContext);
   const movie = props.movie;
   const [favoriteState, setFavoriteState] = useState(
     movie.favorite ? true : false
@@ -27,13 +27,15 @@ export const Movie: React.FunctionComponent<Props> = (
           className="favoriteBtn"
           style={{ color: "#e0245e" }}
           onClick={() => {
-            setFavoriteState(!favoriteState);
-            db.collection("users")
-              .doc("f6xJJp2uHSatdKsQvAIlTab2NTw1")
-              .collection("favoriteMovies")
-              .doc(movie.Title)
-              .delete()
-              .then(() => console.log("deleted a movie from the database"));
+            if (currentUser) {
+              setFavoriteState(!favoriteState);
+              db.collection("users")
+                .doc(currentUser.uid)
+                .collection("favoriteMovies")
+                .doc(movie.Title)
+                .delete()
+                .then(() => console.log("deleted a movie from the database"));
+            }
           }}
         >
           <i className="fas fa-heart"></i>
@@ -46,18 +48,19 @@ export const Movie: React.FunctionComponent<Props> = (
           style={{ color: "#5b7083" }}
           onClick={() => {
             setFavoriteState(!favoriteState);
-            // test my uid
-            db.collection("users")
-              .doc("f6xJJp2uHSatdKsQvAIlTab2NTw1")
-              .collection("favoriteMovies")
-              .doc(movie.Title)
-              .set(movie)
-              .then(() => {
-                console.log(
-                  "your favorite movie has been written to the database"
-                );
-              })
-              .catch((e) => console.error("database write error:", e));
+            if (currentUser) {
+              db.collection("users")
+                .doc(currentUser.uid)
+                .collection("favoriteMovies")
+                .doc(movie.Title)
+                .set(movie)
+                .then(() => {
+                  console.log(
+                    "your favorite movie has been written to the database"
+                  );
+                })
+                .catch((e) => console.error("database write error:", e));
+            }
           }}
         >
           <i className="far fa-heart"></i>
@@ -82,3 +85,4 @@ export const Movie: React.FunctionComponent<Props> = (
     </div>
   );
 };
+export default Movie;

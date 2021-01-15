@@ -1,16 +1,16 @@
-import React from "react";
-import firebase from "../firebase";
-import { Authentication } from "./Authentication";
-import { Modal } from "./Modal";
+import React, { useContext } from "react";
+import firebase, { firebaseApp } from "../firebase";
+import Authentication from "./Authentication";
+import { AuthContext } from "./AuthProvider";
+import Modal from "./Modal";
 
 type Props = {
-  userState?: firebase.User | null;
-  setUserState?: React.Dispatch<React.SetStateAction<firebase.User | null>>;
   toggleShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   isShowModal: boolean;
 };
 
-export const Menu: React.FC<Props> = (props): JSX.Element => {
+const Menu: React.FC<Props> = (props): JSX.Element => {
+  const currentUser = useContext(AuthContext);
   const firebaseuiDiv = (user: firebase.User | null | undefined) => {
     // Login時
     if (user) {
@@ -24,7 +24,7 @@ export const Menu: React.FC<Props> = (props): JSX.Element => {
             id="logoutButton"
             type="button"
             onClick={() => {
-              firebase
+              firebaseApp
                 .auth()
                 .signOut()
                 .then(() => {
@@ -57,7 +57,6 @@ export const Menu: React.FC<Props> = (props): JSX.Element => {
     }
   };
   const modal = (bool: boolean) => {
-    console.log(bool);
     if (bool) {
       return (
         <Modal toggleShowModal={props.toggleShowModal}>
@@ -69,9 +68,10 @@ export const Menu: React.FC<Props> = (props): JSX.Element => {
 
   return (
     <div id="Menu">
-      {firebaseuiDiv(props.userState)}
+      {firebaseuiDiv(currentUser)}
       {modal(props.isShowModal)}
     </div>
   );
 };
 // Authentication.contextTypes = IsLoggedInContext;
+export default Menu;
