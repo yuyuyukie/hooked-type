@@ -14,7 +14,7 @@ export const isMovieObject = (obj: any): obj is MovieObject => {
   );
 };
 
-type Props = {};
+type Props = { isVisible: boolean };
 const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
   // ログインしてないなら説明＋誘導
   const currentUser = useContext(AuthContext);
@@ -53,6 +53,9 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     movies.forEach((movie) => {
       movie.favorite = true;
     });
+    if (!props.isVisible) {
+      return <div className="favoriteMoviesContainer" />;
+    }
     if (loading) {
       return <span>loading...</span>;
     }
