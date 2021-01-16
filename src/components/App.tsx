@@ -3,8 +3,9 @@ import "../App.css";
 import Header from "./Header";
 import Movie from "./Movie";
 import FavoriteMode from "./FavoriteMode";
-import Main from "./Main";
+import MovieHolder from "./MovieHolder";
 import SearchMode from "./SearchMode";
+import PageSwitcher from "./PageSwitcher";
 // react context for firebase users
 // import firebase from "firebase";
 
@@ -16,15 +17,8 @@ export interface MovieObject {
   imdbID: string;
   favorite?: boolean;
 }
-export type Props = {
-  search?: (searchValue: string) => void;
-  text?: string;
-};
 
-export enum Mode {
-  Search,
-  Favorite,
-}
+export type Mode = "search" | "favorite";
 export const movieDivFactory = (movies: MovieObject[]): JSX.Element[] => {
   return movies.map(
     (movie: MovieObject, index: number): JSX.Element => {
@@ -36,7 +30,7 @@ export const movieDivFactory = (movies: MovieObject[]): JSX.Element[] => {
 const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
-  const [mode, setMode] = useState<Mode>(Mode.Search);
+  const [showMode, setShowMode] = useState<Mode>("search");
   const modeSelectorStyle = {
     backgroundColor: "#282c34",
     color: "#eeeeee",
@@ -52,24 +46,24 @@ const App: React.FunctionComponent = () => {
       <ul className="modeSelector">
         <li
           className="search"
-          style={mode === Mode.Search ? modeSelectorStyle : {}}
+          style={showMode === "search" ? modeSelectorStyle : {}}
           onClick={() => {
-            setMode(Mode.Search);
+            setShowMode("search");
           }}
         >
           Search
         </li>
         <li
           className="favorite"
-          style={mode === Mode.Favorite ? modeSelectorStyle : {}}
+          style={showMode === "favorite" ? modeSelectorStyle : {}}
           onClick={() => {
-            setMode(Mode.Favorite);
+            setShowMode("favorite");
           }}
         >
           Favorite
         </li>
       </ul>
-      <Main mode={mode} />
+      <MovieHolder showMode={showMode} />
     </div>
   );
 };

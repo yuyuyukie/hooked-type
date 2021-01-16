@@ -11,7 +11,7 @@ type Props = {
 
 const Menu: React.FC<Props> = (props): JSX.Element => {
   const currentUser = useContext(AuthContext);
-  const createMenu = (user: firebase.User | null | undefined) => {
+  const createMenu = (user: firebase.User | null) => {
     // Login時
     if (user) {
       return (

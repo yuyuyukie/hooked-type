@@ -21,7 +21,6 @@ const Modal: React.FC<Props> = (props) => {
       modalRoot?.removeChild(modalContainer);
     };
     // 以下を[modalRoot]にするとcontainerが大量生成されるはず
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!modalRoot) {
     return null;

@@ -43,7 +43,8 @@ function reducer(state: State, action: ACTIONTYPE) {
   }
 }
 type Props = {
-  isVisible: boolean;
+  favMovies: MovieObject[];
+  setFavMovies: React.Dispatch<React.SetStateAction<MovieObject[]>>;
 };
 
 const SearchMode: React.FC<Props> = (props) => {
@@ -74,11 +75,8 @@ const SearchMode: React.FC<Props> = (props) => {
   };
   useEffect(() => {
     search("man");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (!props.isVisible) {
-    return <div className="moviesContainer" />;
-  }
+  console.log(props.favMovies);
   const { movies, errorMessage, loading } = state;
   const showMovies = (movies: MovieObject[]) => {
     if (errorMessage) {
@@ -87,7 +85,16 @@ const SearchMode: React.FC<Props> = (props) => {
     if (loading) {
       return <span>loading...</span>;
     }
-    return movieDivFactory(movies);
+    const favTitles = props.favMovies.map((movie) => {
+      return movie.imdbID;
+    });
+    const moviesWithFav = movies.map((movie) => {
+      if (favTitles.includes(movie.imdbID)) {
+        movie.favorite = true;
+      }
+      return movie;
+    });
+    return movieDivFactory(moviesWithFav);
   };
   return (
     <div className="mainContainer">
