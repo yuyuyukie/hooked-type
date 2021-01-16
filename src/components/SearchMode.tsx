@@ -2,8 +2,6 @@ import React, { useEffect, useReducer } from "react";
 import { movieDivFactory, MovieObject } from "./App";
 import Search from "./Search";
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
-
 type State = {
   loading: boolean;
   movies: MovieObject[];
@@ -14,7 +12,7 @@ const initialState: State = {
   movies: [],
   errorMessage: null,
 };
-type ACTIONTYPE =
+export type ACTIONTYPE =
   | { type: "SEARCH_MOVIES_REQUEST" }
   | { type: "SEARCH_MOVIES_SUCCESS"; payload: MovieObject[] }
   | { type: "SEARCH_MOVIES_FAILURE"; error: string };
@@ -52,33 +50,6 @@ type Props = {
 
 const SearchMode: React.FC<Props> = (props: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const search = (searchValue: string) => {
-    console.log("search start");
-    dispatch({
-      type: "SEARCH_MOVIES_REQUEST",
-    });
-    const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
-    const fullUrl: string = MOVIE_API_URL + searchUrl;
-    console.log(fullUrl);
-    (async function (url: string): Promise<void> {
-      const response = await fetch(url);
-      const JSONResponse = await response.json();
-      if (JSONResponse.Response === "True") {
-        dispatch({
-          type: "SEARCH_MOVIES_SUCCESS",
-          payload: JSONResponse.Search,
-        });
-      } else {
-        dispatch({
-          type: "SEARCH_MOVIES_FAILURE",
-          error: JSONResponse.Error,
-        });
-      }
-    })(fullUrl);
-  };
-  useEffect(() => {
-    search("man");
-  }, []);
   console.log(props.favMovies);
   const { movies, errorMessage, loading } = state;
   const showMovies = (movies: MovieObject[]) => {
@@ -93,6 +64,7 @@ const SearchMode: React.FC<Props> = (props: Props) => {
     });
     const moviesWithFav = movies.map((movie) => {
       if (favTitles.includes(movie.imdbID)) {
+        console.log(props.favMovies);
         movie.favorite = true;
       }
       return movie;
@@ -101,7 +73,7 @@ const SearchMode: React.FC<Props> = (props: Props) => {
   };
   return (
     <div className="mainContainer">
-      <Search search={search} />
+      <Search dispatch={dispatch} />
       <div className="moviesContainer">{showMovies(movies)}</div>
     </div>
   );

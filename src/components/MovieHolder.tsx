@@ -45,18 +45,19 @@ const MovieHolder: React.FC<Props> = (props) => {
         .collection("favoriteMovies");
       setLoading(true);
       favMoviesRef.get().then((snapshot) => {
-        console.log(snapshot.size);
+        const fetchedMovies: MovieObject[] = [];
         snapshot.forEach((doc) => {
           // 本当はisMovieObjectを使いたいが、コンパイルエラーが発生する
           const movie = doc.data();
           if (isMovieObject(movie)) {
-            setFavMovies((movies) => [...movies, movie]);
+            fetchedMovies.push(movie);
           }
+          setFavMovies(fetchedMovies);
         });
         setLoading(false);
       });
     }
-  }, [currentUser, favMovies]);
+  }, [currentUser]);
 
   if (!currentUser) {
     return (
