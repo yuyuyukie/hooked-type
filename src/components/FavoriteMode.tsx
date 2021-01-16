@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { firebaseApp } from "../firebase";
-import { movieDivFactory, MovieObject } from "./App";
+import { MovieObject } from "./App";
+import Movie from "./Movie";
+import MovieContainer from "./MovieContainer";
 
 export const isMovieObject = (obj: any): obj is MovieObject => {
   return (
@@ -57,14 +59,21 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
     if (loading) {
       return <span>loading...</span>;
     }
-    return movieDivFactory(movies);
+    return movies.map(
+      (movie: MovieObject, index: number): JSX.Element => {
+        return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
+      }
+    );
   };
   return (
     <React.Fragment>
       <div className="toolbox" />
-      <div className="favoriteMoviesContainer">
+      <MovieContainer
+        favMovies={props.favMovies}
+        setFavMovies={props.setFavMovies}
+      >
         {createFavMovieDiv(props.favMovies, props.loading)}
-      </div>
+      </MovieContainer>
     </React.Fragment>
   );
 };

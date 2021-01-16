@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer } from "react";
-import { movieDivFactory, MovieObject } from "./App";
+import { MovieObject } from "./App";
+import Movie from "./Movie";
+import MovieContainer from "./MovieContainer";
 import Search from "./Search";
 
 type State = {
@@ -64,17 +66,25 @@ const SearchMode: React.FC<Props> = (props: Props) => {
     });
     const moviesWithFav = movies.map((movie) => {
       if (favTitles.includes(movie.imdbID)) {
-        console.log(props.favMovies);
         movie.favorite = true;
       }
       return movie;
     });
-    return movieDivFactory(moviesWithFav);
+    return movies.map(
+      (movie: MovieObject, index: number): JSX.Element => {
+        return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
+      }
+    );
   };
   return (
     <div className="mainContainer">
       <Search dispatch={dispatch} />
-      <div className="moviesContainer">{showMovies(movies)}</div>
+      <MovieContainer
+        favMovies={props.favMovies}
+        setFavMovies={props.setFavMovies}
+      >
+        {showMovies(movies)}
+      </MovieContainer>
     </div>
   );
 };
