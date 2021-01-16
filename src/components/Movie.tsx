@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { MovieObject } from "./App";
-import firebase, { firebaseApp } from "../firebase";
+import { firebaseApp } from "../firebase";
 import { AuthContext } from "./AuthProvider";
 const db = firebaseApp.firestore();
 
@@ -9,7 +9,7 @@ type Props = {
   movie: MovieObject;
 };
 // OMDbAPIにタイトル画像がなかったときに差し替えて表示する画像
-const DEFAULT_PLACEHOLDER_IMAGE: string =
+const DEFAULT_PLACEHOLDER_IMAGE =
   "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg";
 const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const currentUser = useContext(AuthContext);

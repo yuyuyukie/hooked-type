@@ -1,18 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import firebase, { firebaseApp } from "../firebase";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
+import { firebaseApp } from "../firebase";
 import { movieDivFactory, MovieObject } from "./App";
-import { AuthContext } from "./AuthProvider";
-const db = firebaseApp.firestore();
 
-// export const isMovieObject = (obj: any): obj is MovieObject => {
-//   return (
-//     typeof obj.Title === "string" &&
-//     typeof obj.Type === "string" &&
-//     typeof obj.Poster === "string" &&
-//     typeof obj.Year === "string" &&
-//     typeof obj.imdbID === "string"
-//   );
-// };
+export const isMovieObject = (obj: any): obj is MovieObject => {
+  return (
+    typeof obj.Title === "string" &&
+    typeof obj.Type === "string" &&
+    typeof obj.Poster === "string" &&
+    typeof obj.Year === "string" &&
+    typeof obj.imdbID === "string"
+  );
+};
 
 type Props = {
   favMovies: MovieObject[];

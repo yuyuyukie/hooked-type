@@ -17,8 +17,11 @@ const initialState: State = {
 type ACTIONTYPE =
   | { type: "SEARCH_MOVIES_REQUEST" }
   | { type: "SEARCH_MOVIES_SUCCESS"; payload: MovieObject[] }
-  | { type: "SEARCH_MOVIES_FAILURE"; error: any };
-function reducer(state: State, action: ACTIONTYPE) {
+  | { type: "SEARCH_MOVIES_FAILURE"; error: string };
+const reducer: React.Reducer<State, ACTIONTYPE> = (
+  state: State,
+  action: ACTIONTYPE
+): State => {
   switch (action.type) {
     case "SEARCH_MOVIES_REQUEST":
       return {
@@ -41,13 +44,13 @@ function reducer(state: State, action: ACTIONTYPE) {
     default:
       throw new Error();
   }
-}
+};
 type Props = {
   favMovies: MovieObject[];
   setFavMovies: React.Dispatch<React.SetStateAction<MovieObject[]>>;
 };
 
-const SearchMode: React.FC<Props> = (props) => {
+const SearchMode: React.FC<Props> = (props: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const search = (searchValue: string) => {
     console.log("search start");

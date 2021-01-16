@@ -1,4 +1,4 @@
-import React, { Children, createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import firebase, { firebaseApp } from "../firebase/index";
 
 export const AuthContext = React.createContext<firebase.User | null>(null);

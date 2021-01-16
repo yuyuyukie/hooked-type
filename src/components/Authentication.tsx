@@ -1,7 +1,5 @@
-import firebase, { firebaseApp } from "../firebase";
-import React, { useEffect } from "react";
-import { StyledFirebaseAuth } from "react-firebaseui";
-import { uiConfig } from "../firebase/uiConfig";
+import firebase from "../firebase";
+import React from "react";
 
 type Props = { toggleShowModal: React.Dispatch<React.SetStateAction<boolean>> };
 const Authentication: React.FC<Props> = (props) => {
@@ -10,7 +8,7 @@ const Authentication: React.FC<Props> = (props) => {
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then(function (result: any) {
+      .then(function () {
         // This gives you a Google Access Token.
         // The signed-in user info.
       })

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp } from "../firebase";
 import { Mode, MovieObject } from "./App";
 import { AuthContext } from "./AuthProvider";
-import FavoriteMode from "./FavoriteMode";
+import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import PageSwitcher from "./PageSwitcher";
 import SearchMode from "./SearchMode";
 
@@ -48,8 +48,10 @@ const MovieHolder: React.FC<Props> = (props) => {
         console.log(snapshot.size);
         snapshot.forEach((doc) => {
           // 本当はisMovieObjectを使いたいが、コンパイルエラーが発生する
-          const movie = (doc.data() as any) as MovieObject;
-          setFavMovies((movies) => [...movies, movie]);
+          const movie = doc.data();
+          if (isMovieObject(movie)) {
+            setFavMovies((movies) => [...movies, movie]);
+          }
         });
         setLoading(false);
       });

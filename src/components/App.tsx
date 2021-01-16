@@ -1,11 +1,8 @@
-import React, { useReducer, useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import "../App.css";
 import Header from "./Header";
 import Movie from "./Movie";
-import FavoriteMode from "./FavoriteMode";
 import MovieHolder from "./MovieHolder";
-import SearchMode from "./SearchMode";
-import PageSwitcher from "./PageSwitcher";
 // react context for firebase users
 // import firebase from "firebase";
 
