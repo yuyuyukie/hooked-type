@@ -1,0 +1,34 @@
+{
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2021
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect",
+      "flowVersion": "0.53"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ],
+  "rules": {
+    "react/jsx-key": "off",
+    "@typescript-eslint/explicit-function-return-type": "off", // 返値記述を無効か
+    "react/no-unescaped-entities": "off", //記号とかエスケープしないといけなくなる
+    "react/prop-types": "off", // const fc:React.FC<Props> = (props:Props) =>{} と二回書く必要があるため,
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}

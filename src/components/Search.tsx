@@ -1,8 +1,38 @@
-import React, { useState } from "react";
-import { Props } from "./App";
-export const Search: React.FunctionComponent<Props> = (
-  props: Props
-): JSX.Element => {
+import React, { useEffect, useState } from "react";
+import { ACTIONTYPE } from "../reducers/Reducer";
+
+type Props = {
+  dispatch: React.Dispatch<ACTIONTYPE>;
+};
+const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+
+const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
+  const search = (searchValue: string) => {
+    props.dispatch({
+      type: "fetch-request",
+    });
+    const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
+    const fullUrl: string = MOVIE_API_URL + searchUrl;
+    console.log(fullUrl);
+    (async function (url: string): Promise<void> {
+      const response = await fetch(url);
+      const JSONResponse = await response.json();
+      if (JSONResponse.Response === "True") {
+        props.dispatch({
+          type: "fetch-success",
+          payload: JSONResponse.Search,
+        });
+      } else {
+        props.dispatch({
+          type: "fetch-failure",
+          error: JSONResponse.Error,
+        });
+      }
+    })(fullUrl);
+  };
+  useEffect(() => {
+    search("man");
+  }, []);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -16,11 +46,14 @@ export const Search: React.FunctionComponent<Props> = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
   ): void => {
     e.preventDefault();
-    props.search(searchValue);
+    search(searchValue);
     resetInputField();
   };
+  useEffect(() => {
+    search("man");
+  }, []);
   return (
-    <form className="search">
+    <form className="Search">
       <input
         value={searchValue}
         onChange={handleSearchInputChanges}
@@ -30,3 +63,4 @@ export const Search: React.FunctionComponent<Props> = (
     </form>
   );
 };
+export default Search;

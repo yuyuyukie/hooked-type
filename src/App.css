@@ -1,67 +1,190 @@
+/* CSSリセットここから */
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+/* @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+} */
+
+/* CSSリセットここまで */
+html {
+  /* | global */
+  color: #0f1419;
+}
+
+.hidden {
+  display: none;
+}
 .App {
   text-align: center;
 }
+* {
+  box-sizing: border-box;
+}
+/* | Modal */
+.Modal {
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.76);
+}
+.Modal div {
+  border: 1px rgb(0, 0, 0);
+  background: #eeeeee;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
 
-.App-header {
+/* | Header */
+.Header {
   background-color: #282c34;
   height: 70px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding: 20px;
-  cursor: pointer;
+  cursor: default;
 }
-
-.spinner {
+/* 厳密に真ん中じゃない */
+.Header h1 {
+  margin-left: auto;
+}
+.Header h2 {
+  margin: 0;
+}
+.Header > div {
+  margin: 2% 1% 2% auto;
+  display: flex;
+  height: 100%;
+}
+.Header button {
+  box-sizing: border-box;
+  height: 45%;
+  width: 100%;
+  background: #0f1419;
+  color: #eeeeee;
+  font-size: 1rem;
+  cursor: pointer;
+  flex: 1;
+  padding: 0 1.5rem;
+  transition: all 0.2s linear;
+}
+.Header button:hover {
+  background: #ffffffbf;
+  color: #0f1419;
+}
+.Header .spinner {
   height: 80px;
   margin: auto;
 }
-
-.App-intro {
-  font-size: large;
+/* | Menu, Auth */
+.signinOption {
+  cursor: pointer;
+  padding: 0.5rem 4rem 0.5rem 1rem;
+  list-style-type: none;
+  border: 1px solid #0f1419;
+  border-radius: 3px 3px 3px 3px;
+  transition-property: border-radius, background-color;
+  transition-delay: 1ms;
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
 }
-
-/* new css for movie component */
-
-* {
-  box-sizing: border-box;
+.signinOption:hover {
+  background-color: #697691;
+  border-radius: 3px 3px 25px 3px;
 }
-
-.movies {
+/* | ModeSelector */
+.modeSelector {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
+  list-style-type: none;
+}
+.modeSelector > li {
+  cursor: pointer;
+  flex: 1;
+  border: 1px #282c34 solid;
+  transition: all linear 0.2s;
+}
+.modeSelector > li:hover {
+  background-color: #282c34;
+  color: #eeeeee;
 }
 
-.App-header h2 {
-  margin: 0;
-}
+/* | Search周り */
 
-.add-movies {
-  text-align: center;
-}
-
-.add-movies button {
-  font-size: 16px;
-  padding: 8px;
-  margin: 0 10px 30px 10px;
-}
-
-.movie {
-  padding: 5px 25px 10px 25px;
-  max-width: 25%;
-}
-
-.errorMessage {
-  margin: auto;
-  font-weight: bold;
-  color: rgb(161, 15, 15);
-}
-
-.search {
+.Search {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -69,6 +192,11 @@
   margin-top: 10px;
 }
 
+.errorMessage {
+  margin: auto;
+  font-weight: bold;
+  color: rgb(161, 15, 15);
+}
 input[type="submit"] {
   padding: 5px;
   background-color: transparent;
@@ -81,28 +209,69 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #282c34;
-  color: antiquewhite;
+  color: #eeeeee;
 }
 
-.search > input[type="text"] {
+.Search > input[type="text"] {
   width: 40%;
   min-width: 170px;
 }
 
+/* | Movie */
+
+.Movie {
+  padding: 5px 25px 10px 25px;
+  max-width: 25%;
+}
+
+/* .add-movies {
+  text-align: center;
+}
+
+.add-movies button {
+  font-size: 16px;
+  padding: 8px;
+  margin: 0 10px 30px 10px;
+} */
+.movieFooter {
+  display: flex;
+  justify-content: center;
+}
+.year,
+.favoriteBtn,
+.favoriteBtn > {
+  display: inline-block;
+}
+.favoriteBtn {
+  margin-left: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all linear 0.1s;
+}
+.favoriteBtn:hover {
+  background: #e024607c;
+  color: #e0245e7c;
+}
+
+/* | レスポンシブ */
 @media screen and (min-width: 694px) and (max-width: 915px) {
-  .movie {
+  .Movie {
     max-width: 33%;
   }
 }
 
 @media screen and (min-width: 652px) and (max-width: 693px) {
-  .movie {
+  .Movie {
     max-width: 50%;
   }
 }
 
 @media screen and (max-width: 651px) {
-  .movie {
+  .Movie {
     max-width: 100%;
     margin: auto;
   }
