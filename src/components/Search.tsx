@@ -8,7 +8,6 @@ const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
 
 const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const search = (searchValue: string) => {
-    console.log("search start");
     props.dispatch({
       type: "fetch-request",
     });

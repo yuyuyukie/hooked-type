@@ -21,8 +21,13 @@ export type Mode = "search" | "favorite";
 const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
-  const currentMode = useContext(Context).state.currentMode;
-  const setMode = useContext(Context).dispatch;
+  const context = useContext(Context);
+  const currentMode = context.state.currentMode;
+  const setMode = context.dispatch;
+  const isLoading =
+    context.state.loadingDatabase ||
+    context.state.loadingSearch ||
+    !context.state.currentUser;
   if (setMode == null) {
     throw new Error();
   }
@@ -34,7 +39,7 @@ const App: React.FunctionComponent = () => {
   return (
     <div className="App">
       <Header
-        text="HookedType"
+        text={isLoading ? "HookedTypo" : "HookedType"}
         isShowModal={isShowModal}
         toggleShowModal={toggleShowModal}
       />

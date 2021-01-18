@@ -56,22 +56,13 @@ const MovieHolder: React.FC = () => {
       });
     }
   }, [currentUser]);
-
-  if (!currentUser) {
+  if (!currentUser && currentMode === "favorite") {
     return (
       <div className="notLoggedInMessage" style={{ fontSize: "1.5rem" }}>
         We need you to "Sign in" to use this functionality.
       </div>
     );
   }
-
-  // const [searchMovies, setSearchMovies] = useState<MovieObject[]>([]);
-  // SearchModeでお気に入りに入れた映画があるか判定するために橋渡しするMovieObject[]
-  // const initialMoviesState: MoviesState = {
-  //   favoriteMovies: [],
-  //   databaseOrder: DATABASE_ORDER.fetch,
-  // };
-  // const [moviesState, dispatch] = useReducer(reducer, initialMoviesState);
 
   return (
     <>
