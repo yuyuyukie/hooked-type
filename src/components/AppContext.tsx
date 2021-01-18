@@ -1,11 +1,11 @@
 import App from "./App";
 import React from "react";
-import AuthProvider from "./AuthProvider";
+import ContextProvider from "./ContextProvider";
 const AppContext: React.FC = () => {
   return (
-    <AuthProvider>
+    <ContextProvider>
       <App />;
-    </AuthProvider>
+    </ContextProvider>
   );
 };
 export default AppContext;

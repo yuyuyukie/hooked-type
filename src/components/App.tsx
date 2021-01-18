@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../App.css";
+import { Context } from "../contexts/Context";
 import Header from "./Header";
 import Movie from "./Movie";
 import MovieHolder from "./MovieHolder";
@@ -16,18 +17,15 @@ export interface MovieObject {
 }
 
 export type Mode = "search" | "favorite";
-export const movieDivFactory = (movies: MovieObject[]): JSX.Element[] => {
-  return movies.map(
-    (movie: MovieObject, index: number): JSX.Element => {
-      return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
-    }
-  );
-};
 
 const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
-  const [showMode, setShowMode] = useState<Mode>("search");
+  const currentMode = useContext(Context).state.currentMode;
+  const setMode = useContext(Context).dispatch;
+  if (setMode == null) {
+    throw new Error();
+  }
   const modeSelectorStyle = {
     backgroundColor: "#282c34",
     color: "#eeeeee",
@@ -43,24 +41,24 @@ const App: React.FunctionComponent = () => {
       <ul className="modeSelector">
         <li
           className="search"
-          style={showMode === "search" ? modeSelectorStyle : {}}
+          style={currentMode === "search" ? modeSelectorStyle : {}}
           onClick={() => {
-            setShowMode("search");
+            setMode({ type: "mode-switch", data: "search" });
           }}
         >
           Search
         </li>
         <li
           className="favorite"
-          style={showMode === "favorite" ? modeSelectorStyle : {}}
+          style={currentMode === "favorite" ? modeSelectorStyle : {}}
           onClick={() => {
-            setShowMode("favorite");
+            setMode({ type: "mode-switch", data: "favorite" });
           }}
         >
           Favorite
         </li>
       </ul>
-      <MovieHolder showMode={showMode} />
+      <MovieHolder />
     </div>
   );
 };

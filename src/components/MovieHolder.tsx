@@ -1,14 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
 import { Mode, MovieObject } from "./App";
-import { AuthContext } from "./AuthProvider";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import PageSwitcher from "./PageSwitcher";
 import SearchMode from "./SearchMode";
-
-type Props = {
-  showMode: Mode;
-};
 
 // enumの代替。
 // const DATABASE_ORDER = {
@@ -30,20 +26,23 @@ type Props = {
 
 // };
 const db = firebaseApp.firestore();
-const MovieHolder: React.FC<Props> = (props) => {
+const MovieHolder: React.FC = () => {
   // ログインしてないなら説明＋誘導
-  const currentUser = useContext(AuthContext);
-  // asyncのため更新検知
-  const [favMovies, setFavMovies] = useState<MovieObject[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const context = useContext(Context);
+  const currentUser = context.state.currentUser;
+  const currentMode = context.state.currentMode; // asyncのため更新検知
+  const dispatch = context.dispatch;
+  if (dispatch == null) {
+    throw new Error();
+  }
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser) {
+      dispatch({ type: "database-fetch-request" });
       const favMoviesRef = db
         .collection("users")
         .doc(currentUser.uid)
         .collection("favoriteMovies");
-      setLoading(true);
       favMoviesRef.get().then((snapshot) => {
         const fetchedMovies: MovieObject[] = [];
         snapshot.forEach((doc) => {
@@ -52,9 +51,8 @@ const MovieHolder: React.FC<Props> = (props) => {
           if (isMovieObject(movie)) {
             fetchedMovies.push(movie);
           }
-          setFavMovies(fetchedMovies);
+          dispatch({ type: "database-fetch-success", payload: fetchedMovies });
         });
-        setLoading(false);
       });
     }
   }, [currentUser]);
@@ -74,22 +72,12 @@ const MovieHolder: React.FC<Props> = (props) => {
   //   databaseOrder: DATABASE_ORDER.fetch,
   // };
   // const [moviesState, dispatch] = useReducer(reducer, initialMoviesState);
+
   return (
     <>
-      <PageSwitcher showIndex={props.showMode === "search" ? 0 : 1}>
-        <SearchMode
-          setFavMovies={setFavMovies}
-          favMovies={favMovies}
-          // dispatch={dispatch}
-          // moviesState={moviesState}
-        />
-        <FavoriteMode
-          loading={loading}
-          setFavMovies={setFavMovies}
-          favMovies={favMovies}
-          // dispatch={dispatch}
-          // moviesState={moviesState}
-        />
+      <PageSwitcher showIndex={currentMode === "search" ? 0 : 1}>
+        <SearchMode />
+        <FavoriteMode />
       </PageSwitcher>
     </>
   );

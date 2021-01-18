@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ACTIONTYPE } from "./SearchMode";
+import { ACTIONTYPE } from "../reducers/Reducer";
 
 type Props = {
   dispatch: React.Dispatch<ACTIONTYPE>;
@@ -10,7 +10,7 @@ const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const search = (searchValue: string) => {
     console.log("search start");
     props.dispatch({
-      type: "SEARCH_MOVIES_REQUEST",
+      type: "fetch-request",
     });
     const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
     const fullUrl: string = MOVIE_API_URL + searchUrl;
@@ -20,12 +20,12 @@ const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
       const JSONResponse = await response.json();
       if (JSONResponse.Response === "True") {
         props.dispatch({
-          type: "SEARCH_MOVIES_SUCCESS",
+          type: "fetch-success",
           payload: JSONResponse.Search,
         });
       } else {
         props.dispatch({
-          type: "SEARCH_MOVIES_FAILURE",
+          type: "fetch-failure",
           error: JSONResponse.Error,
         });
       }

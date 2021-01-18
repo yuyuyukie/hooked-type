@@ -1,90 +1,90 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
+import { Context } from "../contexts/Context";
 import { MovieObject } from "./App";
 import Movie from "./Movie";
 import MovieContainer from "./MovieContainer";
 import Search from "./Search";
 
-type State = {
-  loading: boolean;
-  movies: MovieObject[];
-  errorMessage: null | string;
-};
-const initialState: State = {
-  loading: true,
-  movies: [],
-  errorMessage: null,
-};
-export type ACTIONTYPE =
-  | { type: "SEARCH_MOVIES_REQUEST" }
-  | { type: "SEARCH_MOVIES_SUCCESS"; payload: MovieObject[] }
-  | { type: "SEARCH_MOVIES_FAILURE"; error: string };
-const reducer: React.Reducer<State, ACTIONTYPE> = (
-  state: State,
-  action: ACTIONTYPE
-): State => {
-  switch (action.type) {
-    case "SEARCH_MOVIES_REQUEST":
-      return {
-        ...state,
-        loading: true,
-        errorMessage: null,
-      };
-    case "SEARCH_MOVIES_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        movies: action.payload,
-      };
-    case "SEARCH_MOVIES_FAILURE":
-      return {
-        ...state,
-        loading: false,
-        errorMessage: action.error,
-      };
-    default:
-      throw new Error();
-  }
-};
-type Props = {
-  favMovies: MovieObject[];
-  setFavMovies: React.Dispatch<React.SetStateAction<MovieObject[]>>;
-};
+// type State = {
+//   loadingSearch: boolean;
+//   movies: MovieObject[];
+//   errorMessage: null | string;
+// };
+// const initialState: State = {
+//   loadingSearch: true,
+//   movies: [],
+//   errorMessage: null,
+// };
+// export type ACTIONTYPE =
+//   | { type: "SEARCH_MOVIES_REQUEST" }
+//   | { type: "SEARCH_MOVIES_SUCCESS"; payload: MovieObject[] }
+//   | { type: "SEARCH_MOVIES_FAILURE"; error: string };
+// const reducer: React.Reducer<State, ACTIONTYPE> = (
+//   state: State,
+//   action: ACTIONTYPE
+// ): State => {
+//   switch (action.type) {
+//     case "SEARCH_MOVIES_REQUEST":
+//       return {
+//         ...state,
+//         loadingSearch: true,
+//         errorMessage: null,
+//       };
+//     case "SEARCH_MOVIES_SUCCESS":
+//       return {
+//         ...state,
+//         loadingSearch: false,
+//         movies: action.payload,
+//       };
+//     case "SEARCH_MOVIES_FAILURE":
+//       return {
+//         ...state,
+//         loadingSearch: false,
+//         errorMessage: action.error,
+//       };
+//     default:
+//       throw new Error();
+//   }
+// };
 
-const SearchMode: React.FC<Props> = (props: Props) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(props.favMovies);
-  const { movies, errorMessage, loading } = state;
-  const showMovies = (movies: MovieObject[]) => {
+const SearchMode: React.FC = () => {
+  // const [state, dispatch] = useReducer(reducer, initialState);
+  // console.log(props.favMovies);
+  const { state, dispatch } = useContext(Context);
+  if (dispatch == null) {
+    throw new Error();
+  }
+  const favoriteMovies = state.favoriteMovies;
+  const { fetchedMovies, errorMessage, loadingSearch } = state;
+  const showMovies = (fetchedMovies: MovieObject[]) => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
     }
-    if (loading) {
+    if (loadingSearch) {
       return <span>loading...</span>;
     }
-    const favTitles = props.favMovies.map((movie) => {
+    const favTitles = favoriteMovies.map((movie) => {
       return movie.imdbID;
     });
-    const moviesWithFav = movies.map((movie) => {
+    const moviesWithFav = fetchedMovies.map((movie) => {
       if (favTitles.includes(movie.imdbID)) {
         movie.favorite = true;
+      } else {
+        movie.favorite = false;
       }
       return movie;
     });
-    return movies.map(
+    return moviesWithFav.map(
       (movie: MovieObject, index: number): JSX.Element => {
         return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
       }
     );
   };
+
   return (
     <div className="mainContainer">
       <Search dispatch={dispatch} />
-      <MovieContainer
-        favMovies={props.favMovies}
-        setFavMovies={props.setFavMovies}
-      >
-        {showMovies(movies)}
-      </MovieContainer>
+      <MovieContainer>{showMovies(fetchedMovies)}</MovieContainer>
     </div>
   );
 };

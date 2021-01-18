@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
 import { MovieObject } from "./App";
 import Movie from "./Movie";
@@ -15,12 +16,7 @@ export const isMovieObject = (obj: any): obj is MovieObject => {
   );
 };
 
-type Props = {
-  favMovies: MovieObject[];
-  setFavMovies: React.Dispatch<React.SetStateAction<MovieObject[]>>;
-  loading: boolean;
-};
-const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
+const FavoriteMode: React.FC = (): JSX.Element => {
   // // ログインしてないなら説明＋誘導
   // const currentUser = useContext(AuthContext);
   // // asyncのため更新検知
@@ -52,13 +48,16 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
   //     </div>
   //   );
   // }
-  const createFavMovieDiv = (movies: MovieObject[], loading: boolean) => {
+  const context = useContext(Context);
+  const favoriteMovies = context.state.favoriteMovies;
+
+  const createFavMovieDiv = (movies: MovieObject[]) => {
     movies.forEach((movie) => {
       movie.favorite = true;
     });
-    if (loading) {
-      return <span>loading...</span>;
-    }
+    // if (loading) {
+    //   return <span>loading...</span>;
+    // }
     return movies.map(
       (movie: MovieObject, index: number): JSX.Element => {
         return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
@@ -68,12 +67,7 @@ const FavoriteMode: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <React.Fragment>
       <div className="toolbox" />
-      <MovieContainer
-        favMovies={props.favMovies}
-        setFavMovies={props.setFavMovies}
-      >
-        {createFavMovieDiv(props.favMovies, props.loading)}
-      </MovieContainer>
+      <MovieContainer>{createFavMovieDiv(favoriteMovies)}</MovieContainer>
     </React.Fragment>
   );
 };

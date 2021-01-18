@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
+import { Context } from "../contexts/Context";
 import firebase, { firebaseApp } from "../firebase";
 import Authentication from "./Authentication";
-import { AuthContext } from "./AuthProvider";
 import Modal from "./Modal";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Menu: React.FC<Props> = (props): JSX.Element => {
-  const currentUser = useContext(AuthContext);
+  const currentUser = useContext(Context).state.currentUser;
   const createMenu = (user: firebase.User | null) => {
     // Login時
     if (user) {
