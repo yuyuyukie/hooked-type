@@ -6,27 +6,8 @@ import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import Movie from "./Movie";
 import MovieContainer from "./MovieContainer";
 import PageSwitcher from "./PageSwitcher";
-import SearchMode from "./SearchMode";
+import Search from "./Search";
 
-// enumの代替。
-// const DATABASE_ORDER = {
-//   standby: "standby",
-//   add: "add",
-//   delete: "delete",
-//   fetch: "fetch",
-// };
-// // eslint-disable-next-line @typescript-eslint/no-redeclare
-// type DATABASE_ORDER = typeof DATABASE_ORDER[keyof typeof DATABASE_ORDER];
-// type ACTION = { type: ACTION; target: MovieObject[] };
-// type MoviesState = {
-//   favoriteMovies: MovieObject[];
-//   databaseOrder: DATABASE_ORDER;
-//   target?: MovieObject;
-// };
-
-// const reducer = (state: MoviesState, action: ACTION): MoviesState => {
-
-// };
 const db = firebaseApp.firestore();
 const MovieHolder: React.FC = () => {
   const context = useContext(Context);
@@ -88,7 +69,7 @@ const MovieHolder: React.FC = () => {
   return (
     <>
       <PageSwitcher showIndex={currentMode === "search" ? 0 : 1}>
-        <SearchMode />
+        <Search />
         <FavoriteMode />
       </PageSwitcher>
       <MovieContainer>{showMovies()}</MovieContainer>

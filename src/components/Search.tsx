@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { ACTIONTYPE } from "../reducers/Reducer";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../contexts/Context";
 
-type Props = {
-  dispatch?: React.Dispatch<ACTIONTYPE>;
-};
 const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
 
-const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
+const Search: React.FunctionComponent = (): JSX.Element => {
+  const dispatch = useContext(Context).dispatch;
   const search = (searchValue: string) => {
-    if (!props.dispatch) {
+    if (!dispatch) {
       return;
     }
-    const dispatch = props.dispatch;
     dispatch({
       type: "fetch-request",
     });
