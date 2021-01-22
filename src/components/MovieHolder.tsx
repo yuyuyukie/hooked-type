@@ -32,12 +32,9 @@ const MovieHolder: React.FC = () => {
   const currentUser = context.state.currentUser;
   const currentMode = context.state.currentMode; // asyncのため更新検知
   const dispatch = context.dispatch;
-  if (dispatch == null) {
-    throw new Error();
-  }
   // async の購読解除、アップデート用
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && dispatch) {
       dispatch({ type: "database-fetch-request" });
       const favMoviesRef = db
         .collection("users")

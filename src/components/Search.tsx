@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { ACTIONTYPE } from "../reducers/Reducer";
 
 type Props = {
-  dispatch: React.Dispatch<ACTIONTYPE>;
+  dispatch?: React.Dispatch<ACTIONTYPE>;
 };
 const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
 
 const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const search = (searchValue: string) => {
-    props.dispatch({
+    if (!props.dispatch) {
+      return;
+    }
+    const dispatch = props.dispatch;
+    dispatch({
       type: "fetch-request",
     });
     const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
@@ -18,12 +22,12 @@ const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
       const response = await fetch(url);
       const JSONResponse = await response.json();
       if (JSONResponse.Response === "True") {
-        props.dispatch({
+        dispatch({
           type: "fetch-success",
           payload: JSONResponse.Search,
         });
       } else {
-        props.dispatch({
+        dispatch({
           type: "fetch-failure",
           error: JSONResponse.Error,
         });

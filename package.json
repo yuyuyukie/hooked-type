@@ -49,16 +49,8 @@
     "ts-jest": "^26.4.4"
   },
   "jest": {
-    "roots": [
-      "<rootDir>/src/"
-    ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.json"
-      }
     },
     "testMatch": [
       "**/__tests__/**/*.+(ts|tsx|js)",
