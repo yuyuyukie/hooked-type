@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { Context } from "../contexts/Context";
+import { Context, Mode } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
 import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
+import Movie from "./Movie";
+import MovieContainer from "./MovieContainer";
 import PageSwitcher from "./PageSwitcher";
 import SearchMode from "./SearchMode";
 
@@ -27,10 +29,16 @@ import SearchMode from "./SearchMode";
 // };
 const db = firebaseApp.firestore();
 const MovieHolder: React.FC = () => {
-  // ログインしてないなら説明＋誘導
   const context = useContext(Context);
-  const currentUser = context.state.currentUser;
-  const currentMode = context.state.currentMode; // asyncのため更新検知
+  const {
+    currentMode,
+    currentUser,
+    showingMovies,
+    errorMessage,
+    loadingSearch,
+    loadingDatabase,
+    favoriteMovies,
+  } = context.state;
   const dispatch = context.dispatch;
   // async の購読解除、アップデート用
   useEffect(() => {
@@ -60,6 +68,34 @@ const MovieHolder: React.FC = () => {
       </div>
     );
   }
+  console.log("re-render");
+  useEffect(() => {
+    console.log("showingMoviesChanged");
+  }, [showingMovies]);
+  const showMovies = () => {
+    if (errorMessage) {
+      return <div className="errorMessage">{errorMessage}</div>;
+    }
+    if (loadingSearch && currentMode === Mode.search) {
+      return <span>loading...</span>;
+    }
+    const favTitles = favoriteMovies.map((movie) => {
+      return movie.imdbID;
+    });
+    const moviesWithFav = showingMovies.map((movie) => {
+      if (favTitles.includes(movie.imdbID)) {
+        movie.favorite = true;
+      } else {
+        movie.favorite = false;
+      }
+      return movie;
+    });
+    return moviesWithFav.map(
+      (movie: MovieObject, index: number): JSX.Element => {
+        return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
+      }
+    );
+  };
 
   return (
     <>
@@ -67,6 +103,7 @@ const MovieHolder: React.FC = () => {
         <SearchMode />
         <FavoriteMode />
       </PageSwitcher>
+      <MovieContainer>{showMovies()}</MovieContainer>
     </>
   );
 };

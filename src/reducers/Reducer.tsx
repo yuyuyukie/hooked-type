@@ -32,10 +32,17 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         errorMessage: null,
       };
     case "fetch-success":
+      const showingMovies = () => {
+        if (state.currentMode === Mode.search) {
+          return state.fetchedMovies;
+        }
+        return state.showingMovies;
+      };
       return {
         ...state,
         loadingSearch: false,
         fetchedMovies: action.payload,
+        showingMovies: showingMovies(),
       };
     case "fetch-failure":
       return {
@@ -85,6 +92,10 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
       return {
         ...state,
         favoriteMovies: [...newFavMovies],
+        showingMovies:
+          state.currentMode === Mode.favorite
+            ? [...newFavMovies]
+            : state.showingMovies,
         loadingDatabase: false,
       };
     case "database-add-success":

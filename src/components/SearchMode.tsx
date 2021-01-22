@@ -1,8 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
-import { MovieObject } from "./App";
-import Movie from "./Movie";
-import MovieContainer from "./MovieContainer";
 import Search from "./Search";
 
 // type State = {
@@ -50,38 +47,11 @@ import Search from "./Search";
 const SearchMode: React.FC = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   // console.log(props.favMovies);
-  const { state, dispatch } = useContext(Context);
-  const favoriteMovies = state.favoriteMovies;
-  const { fetchedMovies, errorMessage, loadingSearch } = state;
-  const showMovies = (fetchedMovies: MovieObject[]) => {
-    if (errorMessage) {
-      return <div className="errorMessage">{errorMessage}</div>;
-    }
-    if (loadingSearch) {
-      return <span>loading...</span>;
-    }
-    const favTitles = favoriteMovies.map((movie) => {
-      return movie.imdbID;
-    });
-    const moviesWithFav = fetchedMovies.map((movie) => {
-      if (favTitles.includes(movie.imdbID)) {
-        movie.favorite = true;
-      } else {
-        movie.favorite = false;
-      }
-      return movie;
-    });
-    return moviesWithFav.map(
-      (movie: MovieObject, index: number): JSX.Element => {
-        return <Movie key={`${index}-${movie.Title}`} movie={movie} />;
-      }
-    );
-  };
+  const { dispatch } = useContext(Context);
 
   return (
     <div className="mainContainer">
       {dispatch ? <Search dispatch={dispatch} /> : <Search />}
-      <MovieContainer>{showMovies(fetchedMovies)}</MovieContainer>
     </div>
   );
 };
