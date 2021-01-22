@@ -2,8 +2,7 @@
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { MovieObject } from "./App";
-import Movie from "./Movie";
-import MovieContainer from "./MovieContainer";
+import AppContext from "./AppContext";
 
 export const isMovieObject = (obj: any): obj is MovieObject => {
   return (
@@ -16,9 +15,16 @@ export const isMovieObject = (obj: any): obj is MovieObject => {
 };
 
 const FavoriteMode: React.FC = (): JSX.Element => {
+  const currentUser = useContext(Context).state.currentUser;
   return (
     <React.Fragment>
-      <div className="toolbox" />
+      {currentUser ? (
+        <div className="toolbox" />
+      ) : (
+        <div style={{ fontSize: "large" }} className="notSignedInMessage">
+          We need you to Sign in to use this functionality.
+        </div>
+      )}
     </React.Fragment>
   );
 };

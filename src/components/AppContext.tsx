@@ -4,7 +4,7 @@ import ContextProvider from "./ContextProvider";
 const AppContext: React.FC = () => {
   return (
     <ContextProvider>
-      <App />;
+      <App />
     </ContextProvider>
   );
 };

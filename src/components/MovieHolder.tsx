@@ -36,7 +36,6 @@ const MovieHolder: React.FC = () => {
     showingMovies,
     errorMessage,
     loadingSearch,
-    loadingDatabase,
     favoriteMovies,
   } = context.state;
   const dispatch = context.dispatch;
@@ -61,17 +60,6 @@ const MovieHolder: React.FC = () => {
       });
     }
   }, [currentUser]);
-  if (!currentUser && currentMode === "favorite") {
-    return (
-      <div className="notLoggedInMessage" style={{ fontSize: "1.5rem" }}>
-        We need you to "Sign in" to use this functionality.
-      </div>
-    );
-  }
-  console.log("re-render");
-  useEffect(() => {
-    console.log("showingMoviesChanged");
-  }, [showingMovies]);
   const showMovies = () => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
