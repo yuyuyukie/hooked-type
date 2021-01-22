@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { MovieObject } from "./App";
 import { firebaseApp } from "../firebase";
 import { Context } from "../contexts/Context";

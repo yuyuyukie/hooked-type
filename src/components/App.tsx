@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import "../App.css";
 import { Context } from "../contexts/Context";
 import Header from "./Header";
-import Movie from "./Movie";
 import MovieHolder from "./MovieHolder";
 // react context for firebase users
 // import firebase from "firebase";

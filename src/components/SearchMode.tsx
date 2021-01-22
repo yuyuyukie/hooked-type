@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { MovieObject } from "./App";
 import Movie from "./Movie";

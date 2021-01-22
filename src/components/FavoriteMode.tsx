@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
-import { firebaseApp } from "../firebase";
 import { MovieObject } from "./App";
 import Movie from "./Movie";
 import MovieContainer from "./MovieContainer";

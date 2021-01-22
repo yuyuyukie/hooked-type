@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
-import { Mode, MovieObject } from "./App";
+import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import PageSwitcher from "./PageSwitcher";
 import SearchMode from "./SearchMode";
