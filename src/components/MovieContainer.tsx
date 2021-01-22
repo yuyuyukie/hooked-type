@@ -1,5 +1,4 @@
 import * as React from "react";
-import { MovieObject } from "./App";
 
 type Props = {
   children: React.ReactNode;

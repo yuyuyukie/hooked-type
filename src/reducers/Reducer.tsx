@@ -1,5 +1,4 @@
 import { Mode, MovieObject } from "../components/App";
-import FavoriteMode from "../components/FavoriteMode";
 import { State } from "../contexts/Context";
 import firebase from "../firebase";
 
@@ -23,7 +22,7 @@ export type ACTIONTYPE =
   | { type: "auth-state-failure"; error: any }
   | { type: "standby" };
 export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
-  console.log(action.type, "prevLoading:");
+  console.log(action.type);
   switch (action.type) {
     case "fetch-request":
       return {

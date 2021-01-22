@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { MovieObject } from "./App";
 import Movie from "./Movie";
@@ -51,9 +51,6 @@ const SearchMode: React.FC = () => {
   // const [state, dispatch] = useReducer(reducer, initialState);
   // console.log(props.favMovies);
   const { state, dispatch } = useContext(Context);
-  if (dispatch == null) {
-    throw new Error();
-  }
   const favoriteMovies = state.favoriteMovies;
   const { fetchedMovies, errorMessage, loadingSearch } = state;
   const showMovies = (fetchedMovies: MovieObject[]) => {
@@ -83,7 +80,7 @@ const SearchMode: React.FC = () => {
 
   return (
     <div className="mainContainer">
-      <Search dispatch={dispatch} />
+      {dispatch ? <Search dispatch={dispatch} /> : <Search />}
       <MovieContainer>{showMovies(fetchedMovies)}</MovieContainer>
     </div>
   );

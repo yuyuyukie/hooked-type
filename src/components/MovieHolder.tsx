@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
-import { Mode, MovieObject } from "./App";
+import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import PageSwitcher from "./PageSwitcher";
 import SearchMode from "./SearchMode";
@@ -32,12 +32,9 @@ const MovieHolder: React.FC = () => {
   const currentUser = context.state.currentUser;
   const currentMode = context.state.currentMode; // asyncのため更新検知
   const dispatch = context.dispatch;
-  if (dispatch == null) {
-    throw new Error();
-  }
   // async の購読解除、アップデート用
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && dispatch) {
       dispatch({ type: "database-fetch-request" });
       const favMoviesRef = db
         .collection("users")

@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Context, initialState } from "../contexts/Context";
-import firebase, { firebaseApp } from "../firebase/index";
+import { firebaseApp } from "../firebase/index";
 import { Reducer } from "../reducers/Reducer";
 
 type Props = {
@@ -10,7 +10,6 @@ const ContextProvider: React.FC<Props> = (props) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
   // const [currentUser, dispatch] = useState<firebase.User | null>(null);
   useEffect(() => {
-    console.log("a");
     firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch({ type: "auth-state-changed", data: user });

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import "../App.css";
 import { Context } from "../contexts/Context";
 import Header from "./Header";
-import Movie from "./Movie";
 import MovieHolder from "./MovieHolder";
 // react context for firebase users
 // import firebase from "firebase";
@@ -28,9 +27,6 @@ const App: React.FunctionComponent = () => {
     context.state.loadingDatabase ||
     context.state.loadingSearch ||
     !context.state.currentUser;
-  if (setMode == null) {
-    throw new Error();
-  }
   const modeSelectorStyle = {
     backgroundColor: "#282c34",
     color: "#eeeeee",
@@ -48,7 +44,7 @@ const App: React.FunctionComponent = () => {
           className="search"
           style={currentMode === "search" ? modeSelectorStyle : {}}
           onClick={() => {
-            setMode({ type: "mode-switch", data: "search" });
+            if (setMode) setMode({ type: "mode-switch", data: "search" });
           }}
         >
           Search
@@ -57,7 +53,7 @@ const App: React.FunctionComponent = () => {
           className="favorite"
           style={currentMode === "favorite" ? modeSelectorStyle : {}}
           onClick={() => {
-            setMode({ type: "mode-switch", data: "favorite" });
+            if (setMode) setMode({ type: "mode-switch", data: "favorite" });
           }}
         >
           Favorite
