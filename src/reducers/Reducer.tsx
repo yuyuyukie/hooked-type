@@ -1,9 +1,10 @@
-import { Mode, MovieObject } from "../components/App";
-import { State } from "../contexts/Context";
+import { MovieObject } from "../components/App";
+import { State, Mode } from "../contexts/Context";
 import firebase from "../firebase";
 
 export type ACTIONTYPE =
-  | { type: "mode-switch"; data: Mode }
+  | { type: "mode-switch-favorite" }
+  | { type: "mode-switch-search" }
   | { type: "modal-toggle"; data: boolean }
   | { type: "fetch-request" }
   | { type: "fetch-success"; payload: MovieObject[] }
@@ -42,10 +43,17 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         loadingSearch: false,
         errorMessage: action.error,
       };
-    case "mode-switch":
+    case "mode-switch-favorite":
       return {
         ...state,
-        currentMode: action.data,
+        currentMode: Mode.favorite,
+        showingMovies: state.favoriteMovies,
+      };
+    case "mode-switch-search":
+      return {
+        ...state,
+        currentMode: Mode.search,
+        showingMovies: state.fetchedMovies,
       };
     case "auth-state-changed":
       return {

@@ -1,8 +1,9 @@
-import { Mode, MovieObject } from "../components/App";
+import { MovieObject } from "../components/App";
 import firebase from "../firebase";
+import { Mode } from "../contexts/Context";
 
 export type ACTIONTYPE =
-  | { type: "mode-switch"; data: Mode }
+  | { type: "mode-switch"; data: typeof Mode[keyof typeof Mode] }
   | { type: "modal-toggle"; data: boolean }
   | { type: "fetch-request" }
   | { type: "fetch-success"; payload: MovieObject[] }

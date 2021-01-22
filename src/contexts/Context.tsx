@@ -1,13 +1,20 @@
 import { createContext } from "react";
-import { Mode, MovieObject } from "../components/App";
+import { MovieObject } from "../components/App";
 import firebase from "../firebase";
 import { ACTIONTYPE } from "../reducers/Reducer";
+
+export const Mode = {
+  search: "search",
+  favorite: "favorite",
+};
+
 export type State = {
-  currentMode: Mode;
+  currentMode: typeof Mode[keyof typeof Mode];
   isShowModal: boolean;
   loadingSearch: boolean;
   loadingDatabase: boolean;
   errorMessage: string | null;
+  showingMovies: MovieObject[];
   fetchedMovies: MovieObject[];
   favoriteMovies: MovieObject[];
   currentUser: firebase.User | null;
@@ -18,13 +25,14 @@ export type ContextType = {
   dispatch: React.Dispatch<ACTIONTYPE> | null;
 };
 export const initialState: State = {
-  currentMode: "search",
+  currentMode: Mode.search,
   isShowModal: false,
   loadingSearch: false,
   loadingDatabase: false,
   errorMessage: null,
   fetchedMovies: [],
   favoriteMovies: [],
+  showingMovies: [],
   currentUser: null,
 };
 

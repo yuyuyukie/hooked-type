@@ -15,8 +15,6 @@ export interface MovieObject {
   favorite?: boolean;
 }
 
-export type Mode = "search" | "favorite";
-
 const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const [isShowModal, toggleShowModal] = useState<boolean>(false);
@@ -44,7 +42,7 @@ const App: React.FunctionComponent = () => {
           className="search"
           style={currentMode === "search" ? modeSelectorStyle : {}}
           onClick={() => {
-            if (setMode) setMode({ type: "mode-switch", data: "search" });
+            if (setMode) setMode({ type: "mode-switch-search" });
           }}
         >
           Search
@@ -53,7 +51,7 @@ const App: React.FunctionComponent = () => {
           className="favorite"
           style={currentMode === "favorite" ? modeSelectorStyle : {}}
           onClick={() => {
-            if (setMode) setMode({ type: "mode-switch", data: "favorite" });
+            if (setMode) setMode({ type: "mode-switch-favorite" });
           }}
         >
           Favorite
