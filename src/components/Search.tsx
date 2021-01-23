@@ -5,7 +5,7 @@ const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
 
 const Search: React.FunctionComponent = (): JSX.Element => {
   const dispatch = useContext(Context).dispatch;
-  const search = (searchValue: string) => {
+  const search = (searchValue: string, pageNumber: number) => {
     if (!dispatch) {
       return;
     }
@@ -13,8 +13,8 @@ const Search: React.FunctionComponent = (): JSX.Element => {
       type: "fetch-request",
     });
     const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
-    const fullUrl: string = MOVIE_API_URL + searchUrl;
-    console.log(fullUrl);
+    const pageUrl: string = pageNumber ? `page=${pageNumber}&` : "";
+    const fullUrl: string = MOVIE_API_URL + searchUrl + pageUrl;
     (async function (url: string): Promise<void> {
       const response = await fetch(url);
       const JSONResponse = await response.json();
@@ -32,7 +32,7 @@ const Search: React.FunctionComponent = (): JSX.Element => {
     })(fullUrl);
   };
   useEffect(() => {
-    search("man");
+    search("man", 1);
   }, []);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
@@ -47,12 +47,10 @@ const Search: React.FunctionComponent = (): JSX.Element => {
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
   ): void => {
     e.preventDefault();
-    search(searchValue);
+    search(searchValue, 1);
     resetInputField();
   };
-  useEffect(() => {
-    search("man");
-  }, []);
+
   return (
     <form className="Search">
       <input

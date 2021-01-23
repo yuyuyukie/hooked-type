@@ -1,30 +1,30 @@
-import { MovieObject } from "../components/App";
 import { State, Mode } from "../contexts/Context";
-import firebase from "../firebase";
+import { ACTIONTYPE } from "../actions/ActionCreator";
 
-export type ACTIONTYPE =
-  | { type: "mode-switch-favorite" }
-  | { type: "mode-switch-search" }
-  | { type: "modal-toggle"; data: boolean }
-  | { type: "fetch-request" }
-  | { type: "fetch-success"; payload: MovieObject[] }
-  | { type: "fetch-failure"; error: string }
-  | { type: "database-fetch-request" }
-  | { type: "database-add-request" }
-  | { type: "database-delete-request" }
-  | { type: "database-add-success"; target: MovieObject }
-  | { type: "database-delete-success"; target: MovieObject }
-  | { type: "database-fetch-success"; payload: MovieObject[] }
-  | { type: "database-failure"; error: string }
-  | { type: "auth-request-signin" }
-  | { type: "auth-request-signout" }
-  | { type: "auth-request-signin" }
-  | { type: "auth-state-changed"; data: firebase.User | null }
-  | { type: "auth-state-failure"; error: any }
-  | { type: "standby" };
 export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
   console.log(action.type);
   switch (action.type) {
+    case "modal-toggle":
+      return {
+        ...state,
+        isShowModal: action.isShow,
+      };
+    case "mode-switch":
+      const switchShowingMovies = () => {
+        switch (action.mode) {
+          case Mode.search:
+            return state.fetchedMovies;
+          case Mode.favorite:
+            return state.favoriteMovies;
+          default:
+            return [];
+        }
+      };
+      return {
+        ...state,
+        currentMode: action.mode,
+        showingMovies: switchShowingMovies(),
+      };
     case "fetch-request":
       return {
         ...state,
@@ -34,7 +34,8 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
     case "fetch-success":
       const showingMovies = () => {
         if (state.currentMode === Mode.search) {
-          return state.fetchedMovies;
+          console.log(state.fetchedMovies);
+          return action.payload;
         }
         return state.showingMovies;
       };
@@ -49,18 +50,6 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         ...state,
         loadingSearch: false,
         errorMessage: action.error,
-      };
-    case "mode-switch-favorite":
-      return {
-        ...state,
-        currentMode: Mode.favorite,
-        showingMovies: state.favoriteMovies,
-      };
-    case "mode-switch-search":
-      return {
-        ...state,
-        currentMode: Mode.search,
-        showingMovies: state.fetchedMovies,
       };
     case "auth-state-changed":
       return {

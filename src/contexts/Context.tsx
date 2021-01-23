@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { MovieObject } from "../components/App";
 import firebase from "../firebase";
-import { ACTIONTYPE } from "../reducers/Reducer";
+import { ACTIONTYPE } from "../actions/ActionCreator";
 
 export const Mode = {
   search: "search",

@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { switchMode } from "../actions/ActionCreator";
 import "../App.css";
-import { Context } from "../contexts/Context";
+import { Context, Mode } from "../contexts/Context";
 import Header from "./Header";
 import MovieHolder from "./MovieHolder";
 // react context for firebase users
@@ -17,10 +18,9 @@ export interface MovieObject {
 
 const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
-  const [isShowModal, toggleShowModal] = useState<boolean>(false);
   const context = useContext(Context);
   const currentMode = context.state.currentMode;
-  const setMode = context.dispatch;
+  const dispatch = context.dispatch;
   const isLoading =
     context.state.loadingDatabase ||
     context.state.loadingSearch ||
@@ -32,27 +32,19 @@ const App: React.FunctionComponent = () => {
 
   return (
     <div className="App">
-      <Header
-        text={isLoading ? "HookedTypo" : "HookedType"}
-        isShowModal={isShowModal}
-        toggleShowModal={toggleShowModal}
-      />
+      <Header text={isLoading ? "HookedTypo" : "HookedType"} />
       <ul className="modeSelector">
         <li
           className="search"
           style={currentMode === "search" ? modeSelectorStyle : {}}
-          onClick={() => {
-            if (setMode) setMode({ type: "mode-switch-search" });
-          }}
+          onClick={() => switchMode(dispatch, Mode.search)}
         >
           Search
         </li>
         <li
           className="favorite"
           style={currentMode === "favorite" ? modeSelectorStyle : {}}
-          onClick={() => {
-            if (setMode) setMode({ type: "mode-switch-favorite" });
-          }}
+          onClick={() => switchMode(dispatch, Mode.favorite)}
         >
           Favorite
         </li>

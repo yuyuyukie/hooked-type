@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
+import { toggleShowModal } from "../actions/ActionCreator";
 import { Context } from "../contexts/Context";
 import firebase, { firebaseApp } from "../firebase";
 import Authentication from "./Authentication";
 import Modal from "./Modal";
 
-type Props = {
-  toggleShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isShowModal: boolean;
-};
-
-const Menu: React.FC<Props> = (props): JSX.Element => {
-  const currentUser = useContext(Context).state.currentUser;
+const Menu: React.FC = (): JSX.Element => {
+  const { state, dispatch } = useContext(Context);
+  const { isShowModal, currentUser } = state;
   const createMenu = (user: firebase.User | null) => {
     // Login時
     if (user) {
@@ -47,7 +44,7 @@ const Menu: React.FC<Props> = (props): JSX.Element => {
             type="button"
             id="SignInButton"
             onClick={() => {
-              props.toggleShowModal(!props.isShowModal);
+              toggleShowModal(dispatch, true);
             }}
           >
             Sign in/up
@@ -56,20 +53,17 @@ const Menu: React.FC<Props> = (props): JSX.Element => {
       );
     }
   };
-  const modal = (bool: boolean) => {
-    if (bool) {
-      return (
-        <Modal toggleShowModal={props.toggleShowModal}>
-          <Authentication toggleShowModal={props.toggleShowModal} />
-        </Modal>
-      );
-    }
-  };
 
   return (
     <div id="Menu">
       {createMenu(currentUser)}
-      {modal(props.isShowModal)}
+      {isShowModal ? (
+        <Modal>
+          <Authentication />
+        </Modal>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

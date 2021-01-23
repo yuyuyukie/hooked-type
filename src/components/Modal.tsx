@@ -1,20 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { toggleShowModal } from "../actions/ActionCreator";
+import { Context } from "../contexts/Context";
 type Props = {
   children: React.ReactNode;
-  toggleShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Modal: React.FC<Props> = (props) => {
   const modalRoot = document.querySelector("#modal-root");
   const modalContainer = document.createElement("div");
+  const isShowModal = useContext(Context).state.isShowModal;
+  const dispatch = useContext(Context).dispatch;
+  modalContainer.addEventListener("click", (event) => {
+    // ModalをクリックしたときのみModalを非表示
+    if (isShowModal && event.target === event.currentTarget) {
+      toggleShowModal(dispatch, false);
+    }
+  });
   useEffect(() => {
     modalContainer.classList.add("Modal");
-    modalContainer.onclick = (e) => {
-      if (e.target === modalContainer) {
-        props.toggleShowModal(false);
-      }
-    };
+    // modalContainer.onclick = (e) => {
+    //   if (e.target === modalContainer) {
+    //     props.toggleShowModal(false);
+    //   }
+    // };
     modalRoot?.appendChild(modalContainer);
     // clean up
     return () => {

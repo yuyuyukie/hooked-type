@@ -1,8 +1,10 @@
 import firebase from "../firebase";
-import React from "react";
+import React, { useContext } from "react";
+import { toggleShowModal } from "../actions/ActionCreator";
+import { Context } from "../contexts/Context";
 
-type Props = { toggleShowModal: React.Dispatch<React.SetStateAction<boolean>> };
-const Authentication: React.FC<Props> = (props) => {
+const Authentication: React.FC = () => {
+  const dispatch = useContext(Context).dispatch;
   const signinGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -14,7 +16,7 @@ const Authentication: React.FC<Props> = (props) => {
       })
       .catch((error) => console.error(error))
       .finally(() => {
-        props.toggleShowModal(false);
+        toggleShowModal(dispatch, false);
       });
   };
   return (
