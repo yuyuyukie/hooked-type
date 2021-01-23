@@ -4,7 +4,7 @@ import { firebaseApp } from "../firebase";
 import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import Movie from "./Movie";
-import MovieContainer from "./MovieContainer";
+import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 
@@ -72,7 +72,7 @@ const MovieHolder: React.FC = () => {
         <Search />
         <FavoriteMode />
       </PageSwitcher>
-      <MovieContainer>{showMovies()}</MovieContainer>
+      <MovieStyler>{showMovies()}</MovieStyler>
     </>
   );
 };

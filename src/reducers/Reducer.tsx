@@ -32,18 +32,18 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         errorMessage: null,
       };
     case "fetch-success":
-      const showingMovies = () => {
-        if (state.currentMode === Mode.search) {
-          console.log(state.fetchedMovies);
+      const movies = (() => {
+        if (action.needReflesh) {
           return action.payload;
         }
-        return state.showingMovies;
-      };
+        return state.fetchedMovies.concat(...action.payload);
+      })();
       return {
         ...state,
         loadingSearch: false,
-        fetchedMovies: action.payload,
-        showingMovies: showingMovies(),
+        fetchedMovies: movies,
+        showingMovies:
+          state.currentMode === Mode.search ? movies : state.showingMovies,
       };
     case "fetch-failure":
       return {

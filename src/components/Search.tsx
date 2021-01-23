@@ -1,38 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../contexts/Context";
-
-const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+import { search } from "../services/omdb";
 
 const Search: React.FunctionComponent = (): JSX.Element => {
   const dispatch = useContext(Context).dispatch;
-  const search = (searchValue: string, pageNumber: number) => {
-    if (!dispatch) {
-      return;
-    }
-    dispatch({
-      type: "fetch-request",
-    });
-    const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
-    const pageUrl: string = pageNumber ? `page=${pageNumber}&` : "";
-    const fullUrl: string = MOVIE_API_URL + searchUrl + pageUrl;
-    (async function (url: string): Promise<void> {
-      const response = await fetch(url);
-      const JSONResponse = await response.json();
-      if (JSONResponse.Response === "True") {
-        dispatch({
-          type: "fetch-success",
-          payload: JSONResponse.Search,
-        });
-      } else {
-        dispatch({
-          type: "fetch-failure",
-          error: JSONResponse.Error,
-        });
-      }
-    })(fullUrl);
-  };
+
   useEffect(() => {
-    search("man", 1);
+    search(dispatch, "man", true);
   }, []);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
@@ -47,7 +21,7 @@ const Search: React.FunctionComponent = (): JSX.Element => {
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
   ): void => {
     e.preventDefault();
-    search(searchValue, 1);
+    search(dispatch, searchValue, true);
     resetInputField();
   };
 
