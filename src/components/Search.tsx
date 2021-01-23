@@ -7,7 +7,7 @@ const Search: React.FunctionComponent = (): JSX.Element => {
 
   useEffect(() => {
     search(dispatch, "man", true);
-  }, []);
+  }, [dispatch]);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
     e: React.ChangeEvent<HTMLInputElement>

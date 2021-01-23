@@ -26,10 +26,13 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         showingMovies: switchShowingMovies(),
       };
     case "fetch-request":
+      console.log(action.value);
       return {
         ...state,
         loadingSearch: true,
         errorMessage: null,
+        searchValue: action.value,
+        pageNumber: action.page,
       };
     case "fetch-success":
       const movies = (() => {

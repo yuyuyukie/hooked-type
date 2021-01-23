@@ -18,6 +18,8 @@ export type State = {
   fetchedMovies: MovieObject[];
   favoriteMovies: MovieObject[];
   currentUser: firebase.User | null;
+  searchValue: string;
+  pageNumber: number;
 };
 
 export type ContextType = {
@@ -34,6 +36,8 @@ export const initialState: State = {
   favoriteMovies: [],
   showingMovies: [],
   currentUser: null,
+  searchValue: "",
+  pageNumber: 1,
 };
 
 const initialContext: ContextType = {

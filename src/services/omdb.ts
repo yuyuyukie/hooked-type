@@ -1,7 +1,5 @@
 import { ACTIONTYPE } from "../actions/ActionCreator";
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
-
 export const search = (
   dispatch: React.Dispatch<ACTIONTYPE> | null,
   searchValue: string,
@@ -11,11 +9,15 @@ export const search = (
   if (!dispatch) {
     return;
   }
+  console.log(searchValue, pageNumber);
   dispatch({
     type: "fetch-request",
+    value: searchValue,
+    page: pageNumber,
   });
-  const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
-  const pageUrl: string = pageNumber ? `page=${pageNumber}&` : "";
+  const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+  const searchUrl = `s=${searchValue}&`;
+  const pageUrl = `page=${pageNumber}&`;
   const fullUrl: string = MOVIE_API_URL + searchUrl + pageUrl;
   (async function (url: string): Promise<void> {
     const response = await fetch(url);

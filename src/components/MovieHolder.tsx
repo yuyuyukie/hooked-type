@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context, Mode } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
+import { search } from "../services/omdb";
 import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import Movie from "./Movie";
@@ -10,7 +11,7 @@ import Search from "./Search";
 
 const db = firebaseApp.firestore();
 const MovieHolder: React.FC = () => {
-  const context = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const {
     currentMode,
     currentUser,
@@ -18,8 +19,32 @@ const MovieHolder: React.FC = () => {
     errorMessage,
     loadingSearch,
     favoriteMovies,
-  } = context.state;
-  const dispatch = context.dispatch;
+    searchValue,
+    pageNumber,
+  } = state;
+  // SearchMode時にscrollを検知してfetchさせる
+  // unmount時にremoveEventListener
+  useEffect(() => {
+    const scrollToSearch = () => {
+      // scrollYは文書の上端を0としてwindowがどれだけ下にスクロールしているか
+      // innerHeightがブラウザのビューポートの高さで、それの合計の最大値が
+      // 全体の高さ(scrollHeight, clientHeight)と等しい
+      if (
+        currentMode === Mode.search &&
+        !loadingSearch &&
+        window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight &&
+        searchValue
+      ) {
+        console.log(
+          "wheel",
+          window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight
+        );
+        search(dispatch, searchValue, false, pageNumber + 1);
+      }
+    };
+    window.addEventListener("wheel", scrollToSearch);
+    return () => window.removeEventListener("wheel", scrollToSearch);
+  }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser && dispatch) {
@@ -40,13 +65,10 @@ const MovieHolder: React.FC = () => {
         });
       });
     }
-  }, [currentUser]);
+  }, [currentUser, dispatch]);
   const showMovies = () => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
-    }
-    if (loadingSearch && currentMode === Mode.search) {
-      return <span>loading...</span>;
     }
     const favTitles = favoriteMovies.map((movie) => {
       return movie.imdbID;
@@ -65,7 +87,6 @@ const MovieHolder: React.FC = () => {
       }
     );
   };
-
   return (
     <>
       <PageSwitcher showIndex={currentMode === "search" ? 0 : 1}>
