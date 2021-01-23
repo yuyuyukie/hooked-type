@@ -105,8 +105,9 @@ html {
   padding: 0.5rem 1rem;
 }
 
-/* | Header */
-.Header {
+/* | Header  Footer*/
+.Header,
+.Footer {
   background-color: #282c34;
   height: 70px;
   display: flex;
@@ -116,6 +117,13 @@ html {
   font-size: calc(10px + 2vmin);
   color: white;
   cursor: default;
+}
+.Footer li:last-child {
+  margin-left: auto;
+}
+.Footer a {
+  color: #eeeeee;
+  text-decoration: none;
 }
 /* 厳密に真ん中じゃない */
 .Header h1 {
@@ -141,9 +149,18 @@ html {
   padding: 0 1.5rem;
   transition: all 0.2s linear;
 }
-.Header button:hover {
+.Header button:hover,
+.Footer button:hover {
   background: #ffffffbf;
   color: #0f1419;
+}
+.Footer button {
+  background: #0f1419;
+  color: #eeeeee;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.2s linear;
 }
 .Header .spinner {
   height: 80px;

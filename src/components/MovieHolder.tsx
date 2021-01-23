@@ -33,7 +33,8 @@ const MovieHolder: React.FC = () => {
         currentMode === Mode.search &&
         !loadingSearch &&
         window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight &&
-        searchValue
+        searchValue &&
+        currentUser
       ) {
         console.log(
           "wheel",
@@ -44,7 +45,14 @@ const MovieHolder: React.FC = () => {
     };
     window.addEventListener("wheel", scrollToSearch);
     return () => window.removeEventListener("wheel", scrollToSearch);
-  }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
+  }, [
+    currentMode,
+    dispatch,
+    loadingSearch,
+    pageNumber,
+    searchValue,
+    currentUser,
+  ]);
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser && dispatch) {

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { switchMode } from "../actions/ActionCreator";
 import "../App.css";
 import { Context, Mode } from "../contexts/Context";
+import { Footer } from "./Footer";
 import Header from "./Header";
 import MovieHolder from "./MovieHolder";
 // react context for firebase users
@@ -20,6 +21,7 @@ const App: React.FunctionComponent = () => {
   // 認証画面の表示状態
   const context = useContext(Context);
   const currentMode = context.state.currentMode;
+  const currentUser = context.state.currentUser;
   const dispatch = context.dispatch;
   const isLoading =
     context.state.loadingDatabase ||
@@ -50,6 +52,14 @@ const App: React.FunctionComponent = () => {
         </li>
       </ul>
       <MovieHolder />
+      {currentUser ? (
+        ""
+      ) : (
+        <div style={{ fontSize: "large", border: `1px solid #0f1419` }}>
+          To use sequencial searching, please sign in.
+        </div>
+      )}
+      <Footer />
     </div>
   );
 };
