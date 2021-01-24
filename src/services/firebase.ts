@@ -16,12 +16,12 @@ export const signinGoogle = () => {
     })
     .catch((e) => console.error(e));
 };
-export const signout = (): void => {
-  firebaseApp
+export const signout = () => {
+  return firebaseApp
     .auth()
     .signOut()
     .then(() => {
-      console.log("ログアウトしました。");
+      console.log("signed out successfully");
     })
     .catch((e) => console.error(e));
 };

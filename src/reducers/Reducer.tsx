@@ -57,7 +57,9 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
     case "auth-state-changed":
       return {
         ...state,
-        currentUser: action.data,
+        currentUser: action.data ? action.data : null,
+        favoriteMovies: action.data ? state.favoriteMovies : [],
+        currentMode: Mode.search,
       };
     case "auth-state-failure":
       return {

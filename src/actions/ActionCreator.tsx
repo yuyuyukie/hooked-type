@@ -17,7 +17,10 @@ export type ACTIONTYPE =
   | { type: "auth-request-signin" }
   | { type: "auth-request-signout" }
   | { type: "auth-request-signin" }
-  | { type: "auth-state-changed"; data: firebase.User | null }
+  | {
+      type: "auth-state-changed";
+      data: firebase.User | null;
+    }
   | { type: "auth-state-failure"; error: any }
   | { type: "mode-switch"; mode: typeof Mode[keyof typeof Mode] };
 
