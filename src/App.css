@@ -78,6 +78,7 @@ html {
 
 .hidden {
   display: none;
+  scroll-behavior: smooth;
 }
 .App {
   text-align: center;

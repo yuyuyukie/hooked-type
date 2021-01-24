@@ -25,12 +25,14 @@ const Modal: React.FC<Props> = (props) => {
     //   }
     // };
     modalRoot?.appendChild(modalContainer);
+    console.log(modalRoot?.childNodes);
     // clean up
     return () => {
       modalRoot?.removeChild(modalContainer);
     };
     // 以下を[modalRoot]にするとcontainerが大量生成されるはず
-  }, []);
+    //  >> 大丈夫だった。
+  }, [modalContainer, modalRoot]);
   if (!modalRoot) {
     return null;
   }

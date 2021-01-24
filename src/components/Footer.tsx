@@ -1,15 +1,25 @@
 import React from "react";
 
 export const Footer: React.FC = () => {
+  const h = document.querySelector("#app-root")?.scrollHeight;
+  const height = h ? h : 0;
   return (
-    <footer className="Footer">
+    <footer
+      style={
+        height > window.innerHeight
+          ? {}
+          : // 文書のheightが低ければページ下部に固定
+            { position: "absolute", bottom: "0", width: "100%" }
+      }
+      className="Footer"
+    >
       <ul
         style={{
           display: "flex",
           flexDirection: "row",
           listStyleType: "none",
-          width: "100%",
           alignItems: "center",
+          width: "100%",
         }}
       >
         <li>2021 YukiYama</li>
@@ -19,8 +29,14 @@ export const Footer: React.FC = () => {
           </a>
         </li>
         <li>
-          <button id="back-to-top">
-            <a href=".Header">Back to Top</a>
+          <button
+            type="button"
+            id="back-to-top"
+            onClick={() => {
+              window.scrollTo({ top: 0 });
+            }}
+          >
+            Back to Top
           </button>
         </li>
       </ul>
