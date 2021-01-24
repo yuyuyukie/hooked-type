@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context, Mode } from "../contexts/Context";
 import { firebaseApp } from "../firebase";
+import { fetchMovies } from "../services/firebase";
 import { search } from "../services/omdb";
 import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
@@ -57,21 +58,22 @@ const MovieHolder: React.FC = () => {
   useEffect(() => {
     if (currentUser && dispatch) {
       dispatch({ type: "database-fetch-request" });
-      const favMoviesRef = db
-        .collection("users")
-        .doc(currentUser.uid)
-        .collection("favoriteMovies");
-      favMoviesRef.get().then((snapshot) => {
-        const fetchedMovies: MovieObject[] = [];
-        snapshot.forEach((doc) => {
-          // 本当はisMovieObjectを使いたいが、コンパイルエラーが発生する
-          const movie = doc.data();
-          if (isMovieObject(movie)) {
-            fetchedMovies.push(movie);
-          }
-          dispatch({ type: "database-fetch-success", payload: fetchedMovies });
-        });
-      });
+      fetchMovies(currentUser.uid)
+        .then((snapshot) => {
+          const fetchedMovies: MovieObject[] = [];
+          snapshot.forEach((doc) => {
+            // 本当はisMovieObjectを使いたいが、コンパイルエラーが発生する
+            const movie = doc.data();
+            if (isMovieObject(movie)) {
+              fetchedMovies.push(movie);
+            }
+            dispatch({
+              type: "database-fetch-success",
+              payload: fetchedMovies,
+            });
+          });
+        })
+        .catch((e) => console.error(e));
     }
   }, [currentUser, dispatch]);
   const showMovies = () => {
@@ -102,6 +104,13 @@ const MovieHolder: React.FC = () => {
         <FavoriteMode />
       </PageSwitcher>
       <MovieStyler>{showMovies()}</MovieStyler>
+      {!currentUser && currentMode === Mode.search ? (
+        <div style={{ fontSize: "large", border: `1px solid #0f1419` }}>
+          To use sequencial searching, please sign in.
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

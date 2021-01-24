@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { toggleShowModal } from "../actions/ActionCreator";
 import { Context } from "../contexts/Context";
-import firebase, { firebaseApp } from "../firebase";
+import firebase from "../firebase";
+import { signout } from "../services/firebase";
 import Authentication from "./Authentication";
 import Modal from "./Modal";
 
@@ -17,18 +18,7 @@ const Menu: React.FC = (): JSX.Element => {
           style={{ display: "flex", flexDirection: "column" }}
         >
           <div>Hello, {user.displayName}</div>
-          <button
-            id="logoutButton"
-            type="button"
-            onClick={() => {
-              firebaseApp
-                .auth()
-                .signOut()
-                .then(() => {
-                  console.log("ログアウトしました。");
-                });
-            }}
-          >
+          <button id="logoutButton" type="button" onClick={() => signout()}>
             Logout
           </button>
         </div>
