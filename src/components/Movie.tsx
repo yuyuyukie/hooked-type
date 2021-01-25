@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 import { MovieObject } from "./App";
-import { firebaseApp } from "../firebase";
 import { Context } from "../contexts/Context";
 import { addFavorite, deleteFavorite } from "../services/firebase";
-const db = firebaseApp.firestore();
 
 type Props = {
   key: string;

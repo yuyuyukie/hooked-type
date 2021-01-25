@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { Context, Mode } from "../contexts/Context";
-import { firebaseApp } from "../firebase";
 import { fetchMovies } from "../services/firebase";
 import { search } from "../services/omdb";
 import { MovieObject } from "./App";
@@ -10,7 +9,6 @@ import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 
-const db = firebaseApp.firestore();
 const MovieHolder: React.FC = () => {
   const { state, dispatch } = useContext(Context);
   const {
