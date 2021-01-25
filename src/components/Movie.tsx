@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { MovieObject } from "./App";
 import { firebaseApp } from "../firebase";
 import { Context } from "../contexts/Context";
+import { addFavorite, deleteFavorite } from "../services/firebase";
 const db = firebaseApp.firestore();
 
 type Props = {
@@ -31,11 +32,7 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
           onClick={() => {
             if (currentUser) {
               dispatch({ type: "database-delete-request" });
-              db.collection("users")
-                .doc(currentUser.uid)
-                .collection("favoriteMovies")
-                .doc(movie.Title)
-                .delete()
+              deleteFavorite(currentUser.uid, movie.Title)
                 .then(() => {
                   dispatch({ type: "database-delete-success", target: movie });
                   console.log("deleted a movie from the database");
@@ -57,11 +54,7 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
           onClick={() => {
             if (currentUser) {
               dispatch({ type: "database-add-request" });
-              db.collection("users")
-                .doc(currentUser.uid)
-                .collection("favoriteMovies")
-                .doc(movie.Title)
-                .set(movie)
+              addFavorite(currentUser.uid, movie)
                 .then(() => {
                   dispatch({ type: "database-add-success", target: movie });
                   console.log(

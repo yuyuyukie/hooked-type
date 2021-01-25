@@ -3,7 +3,7 @@ import * as React from "react";
 type Props = {
   children: React.ReactNode;
 };
-const MovieContainer: React.FC<Props> = (props) => {
+const MovieStyler: React.FC<Props> = (props) => {
   return (
     <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}>
       {props.children}
@@ -11,4 +11,4 @@ const MovieContainer: React.FC<Props> = (props) => {
   );
 };
 
-export default MovieContainer;
+export default MovieStyler;

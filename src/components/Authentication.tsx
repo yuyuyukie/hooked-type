@@ -1,22 +1,11 @@
-import firebase from "../firebase";
-import React from "react";
+import React, { useContext } from "react";
+import { toggleShowModal } from "../actions/ActionCreator";
+import { Context } from "../contexts/Context";
+import { signinGoogle } from "../services/firebase";
 
-type Props = { toggleShowModal: React.Dispatch<React.SetStateAction<boolean>> };
-const Authentication: React.FC<Props> = (props) => {
-  const signinGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(function () {
-        // This gives you a Google Access Token.
-        // The signed-in user info.
-      })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        props.toggleShowModal(false);
-      });
-  };
+const Authentication: React.FC = () => {
+  console.log("auth");
+  const dispatch = useContext(Context).dispatch;
   return (
     <div className="Authenticaion">
       <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
@@ -27,7 +16,16 @@ const Authentication: React.FC<Props> = (props) => {
         firebaseAuth={firebaseApp.auth()}
       /> */}
       <ul>
-        <li className="signinOption" onClick={() => signinGoogle()}>
+        <li
+          className="signinOption"
+          onClick={() =>
+            signinGoogle()
+              .catch((error) => console.error(error))
+              .finally(() => {
+                toggleShowModal(dispatch, false);
+              })
+          }
+        >
           Google
         </li>
       </ul>

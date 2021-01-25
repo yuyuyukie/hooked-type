@@ -9,7 +9,7 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "react-hooks"],
   "settings": {
     "react": {
       "pragma": "React",
@@ -29,6 +29,8 @@
     "react/no-unescaped-entities": "off", //記号とかエスケープしないといけなくなる
     "react/prop-types": "off", // const fc:React.FC<Props> = (props:Props) =>{} と二回書く必要があるため,
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
   }
 }

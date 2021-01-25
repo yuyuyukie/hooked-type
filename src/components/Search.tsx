@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { ACTIONTYPE } from "../reducers/Reducer";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../contexts/Context";
+import { search } from "../services/omdb";
 
-type Props = {
-  dispatch?: React.Dispatch<ACTIONTYPE>;
-};
-const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+const Search: React.FunctionComponent = (): JSX.Element => {
+  const dispatch = useContext(Context).dispatch;
 
-const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
-  const search = (searchValue: string) => {
-    if (!props.dispatch) {
-      return;
-    }
-    const dispatch = props.dispatch;
-    dispatch({
-      type: "fetch-request",
-    });
-    const searchUrl: string = searchValue ? `s=${searchValue}&` : "";
-    const fullUrl: string = MOVIE_API_URL + searchUrl;
-    console.log(fullUrl);
-    (async function (url: string): Promise<void> {
-      const response = await fetch(url);
-      const JSONResponse = await response.json();
-      if (JSONResponse.Response === "True") {
-        dispatch({
-          type: "fetch-success",
-          payload: JSONResponse.Search,
-        });
-      } else {
-        dispatch({
-          type: "fetch-failure",
-          error: JSONResponse.Error,
-        });
-      }
-    })(fullUrl);
-  };
   useEffect(() => {
-    search("man");
-  }, []);
+    search(dispatch, "man", true);
+  }, [dispatch]);
   const [searchValue, setSearchValue] = useState("");
   const handleSearchInputChanges = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -50,12 +21,10 @@ const Search: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
   ): void => {
     e.preventDefault();
-    search(searchValue);
+    search(dispatch, searchValue, true);
     resetInputField();
   };
-  useEffect(() => {
-    search("man");
-  }, []);
+
   return (
     <form className="Search">
       <input
