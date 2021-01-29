@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import { MovieObject } from "./App";
-import { firebaseApp } from "../firebase";
 import { Context } from "../contexts/Context";
 import { addFavorite, deleteFavorite } from "../services/firebase";
-const db = firebaseApp.firestore();
+import FavoriteBtn from "./FavoriteBtn";
 
 type Props = {
   key: string;
@@ -22,57 +21,35 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const movie = props.movie;
   const poster =
     movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
-  const favoriteBtn = (favorite: boolean) => {
-    // favoriteによって♥、color、onClickを切り替え
-    if (favorite) {
-      return (
-        <div
-          className="favoriteBtn"
-          style={{ color: "#e0245e" }}
-          onClick={() => {
-            if (currentUser) {
-              dispatch({ type: "database-delete-request" });
-              deleteFavorite(currentUser.uid, movie.Title)
-                .then(() => {
-                  dispatch({ type: "database-delete-success", target: movie });
-                  console.log("deleted a movie from the database");
-                })
-                .catch((e) => {
-                  dispatch({ type: "database-failure", error: e });
-                });
-            }
-          }}
-        >
-          <i className="fas fa-heart"></i>
-        </div>
-      );
+  const handleClick = (bool: boolean) => {
+    if (!currentUser) {
+      return;
+    }
+    // boolは現在の状態なので、逆の処理を行う
+    if (bool) {
+      dispatch({ type: "database-delete-request" });
+      deleteFavorite(currentUser.uid, movie.Title)
+        .then(() => {
+          dispatch({ type: "database-delete-success", target: movie });
+          console.log("deleted a movie from the database");
+        })
+        .catch((e) => {
+          dispatch({ type: "database-failure", error: e });
+        });
     } else {
-      return (
-        <div
-          className="favoriteBtn"
-          style={{ color: "#5b7083" }}
-          onClick={() => {
-            if (currentUser) {
-              dispatch({ type: "database-add-request" });
-              addFavorite(currentUser.uid, movie)
-                .then(() => {
-                  dispatch({ type: "database-add-success", target: movie });
-                  console.log(
-                    "your favorite movie has been written to the database"
-                  );
-                })
-                .catch((e) => {
-                  dispatch({ type: "database-failure", error: e });
-                  console.error("database write error:", e);
-                });
-            }
-          }}
-        >
-          <i className="far fa-heart"></i>
-        </div>
-      );
+      dispatch({ type: "database-add-request" });
+      addFavorite(currentUser.uid, movie)
+        .then(() => {
+          dispatch({ type: "database-add-success", target: movie });
+          console.log("your favorite movie has been written to the database");
+        })
+        .catch((e) => {
+          dispatch({ type: "database-failure", error: e });
+          console.error("database write error:", e);
+        });
     }
   };
+
   return (
     <div className="Movie">
       <h2>{movie.Title}</h2>
@@ -85,7 +62,10 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
       </div>
       <div className="movieFooter">
         <div className="year">({movie.Year})</div>
-        {favoriteBtn(movie.favorite ? true : false)}
+        <FavoriteBtn
+          isFavorite={movie.favorite ? true : false}
+          handleClick={handleClick}
+        />
       </div>
     </div>
   );
