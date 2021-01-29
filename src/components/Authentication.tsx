@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { toggleShowModal } from "../actions/ActionCreator";
 import { Context } from "../contexts/Context";
-import { signinGoogle } from "../services/firebase";
+import { signinAnonymously, signinGoogle } from "../services/firebase";
 
 const Authentication: React.FC = () => {
   console.log("auth");
@@ -26,7 +26,18 @@ const Authentication: React.FC = () => {
               })
           }
         >
+          <i className="fab fa-google"></i>
           Google
+        </li>
+        <li
+          className="signinOption"
+          onClick={() => {
+            signinAnonymously().finally(() => {
+              toggleShowModal(dispatch, false);
+            });
+          }}
+        >
+          As Guest
         </li>
       </ul>
     </div>

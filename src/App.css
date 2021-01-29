@@ -75,6 +75,12 @@ html {
   /* | global */
   color: #0f1419;
 }
+ul {
+  padding: 0 1rem;
+}
+ul li {
+  margin: 0.2rem 0.5rem;
+}
 
 .hidden {
   display: none;
@@ -147,13 +153,8 @@ html {
   font-size: 1rem;
   cursor: pointer;
   flex: 1;
-  padding: 0 1.5rem;
+  padding: 0.5rem 1.5rem;
   transition: all 0.2s linear;
-}
-.Header button:hover,
-.Footer button:hover {
-  background: #ffffffbf;
-  color: #0f1419;
 }
 .Footer button {
   background: #0f1419;
@@ -163,24 +164,36 @@ html {
   padding: 0.5rem 1.5rem;
   transition: all 0.2s linear;
 }
+.Header button:hover,
+.Footer button:hover {
+  background: #ffffffbf;
+  color: #0f1419;
+}
 .Header .spinner {
   height: 80px;
   margin: auto;
 }
 /* | Menu, Auth */
+.signinOption i {
+  margin-right: 0.5rem;
+}
 .signinOption {
   cursor: pointer;
   padding: 0.5rem 4rem 0.5rem 1rem;
   list-style-type: none;
   border: 1px solid #0f1419;
   border-radius: 3px 3px 3px 3px;
-  transition-property: border-radius, background-color;
+  transition-property: all;
   transition-delay: 1ms;
   transition-duration: 0.3s;
   transition-timing-function: linear;
 }
+.signinOption * {
+  color: inherit;
+}
 .signinOption:hover {
-  background-color: #697691;
+  color: #eeeeee;
+  background-color: #282c34;
   border-radius: 3px 3px 25px 3px;
 }
 /* | ModeSelector */
@@ -218,11 +231,12 @@ html {
 input[type="submit"] {
   padding: 5px;
   background-color: transparent;
-  color: black;
-  border: 1px solid black;
+  color: #0f1419;
+  border: 1px solid #0f1419;
   width: 80px;
   margin-left: 5px;
   cursor: pointer;
+  transition: all linear 0.2s;
 }
 
 input[type="submit"]:hover {
