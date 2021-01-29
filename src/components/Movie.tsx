@@ -3,6 +3,8 @@ import { MovieObject } from "./App";
 import { Context } from "../contexts/Context";
 import { addFavorite, deleteFavorite } from "../services/firebase";
 import FavoriteBtn from "./FavoriteBtn";
+import { createAuth } from "./Menu";
+import { toggleShowModal } from "../actions/ActionCreator";
 
 type Props = {
   key: string;
@@ -23,6 +25,7 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
     movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
   const handleClick = (bool: boolean) => {
     if (!currentUser) {
+      toggleShowModal(dispatch, true, "Sign in to check this movie!");
       return;
     }
     // boolは現在の状態なので、逆の処理を行う

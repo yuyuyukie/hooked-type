@@ -11,6 +11,7 @@ export const Mode = {
 export type State = {
   currentMode: typeof Mode[keyof typeof Mode];
   isShowModal: boolean;
+  authMessage: string;
   loadingSearch: boolean;
   loadingDatabase: boolean;
   errorMessage: string | null;
@@ -29,6 +30,7 @@ export type ContextType = {
 export const initialState: State = {
   currentMode: Mode.search,
   isShowModal: false,
+  authMessage: "",
   loadingSearch: false,
   loadingDatabase: false,
   errorMessage: null,

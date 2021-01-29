@@ -8,6 +8,7 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
       return {
         ...state,
         isShowModal: action.isShow,
+        authMessage: action.authMessage,
       };
     case "mode-switch":
       const switchShowingMovies = () => {

@@ -22,7 +22,7 @@ const FavoriteMode: React.FC = (): JSX.Element => {
         <div className="toolbox" />
       ) : (
         <div style={{ fontSize: "large" }} className="notSignedInMessage">
-          We need you to Sign in to use this functionality.
+          We need you to sign in to use this functionality.
         </div>
       )}
     </React.Fragment>
