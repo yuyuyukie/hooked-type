@@ -50,7 +50,7 @@ const Menu: React.FC = (): JSX.Element => {
               toggleShowModal(dispatch, true, "Select the option to sign in.");
             }}
           >
-            Sign in/up
+            Sign in
           </button>
         </div>
       );

@@ -55,15 +55,21 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
 
   return (
     <div className="Movie">
-      <h2>{movie.Title}</h2>
-      <div>
-        <img
-          width="200"
-          alt={`The movie titled: ${movie.Title}`}
-          src={poster}
-        />
-      </div>
-      <div className="movieFooter">
+      <h2
+        style={{
+          fontSize: `${
+            movie.Title.length > 26
+              ? "1rem"
+              : movie.Title.length > 13
+              ? "1.2rem"
+              : "1.5rem"
+          }`,
+        }}
+      >
+        {movie.Title}
+      </h2>
+      <img alt={`The movie titled: ${movie.Title}`} src={poster} />
+      <div className="movie-footer">
         <div className="year">({movie.Year})</div>
         <FavoriteBtn
           isFavorite={movie.favorite ? true : false}

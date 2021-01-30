@@ -103,13 +103,14 @@ ul li {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.76);
+  background: #000000cc;
 }
 .Modal div {
   border: 1px rgb(0, 0, 0);
   background: #eeeeee;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
+  margin: 15%;
 }
 
 /* | Header  Footer*/
@@ -119,11 +120,13 @@ ul li {
   height: 70px;
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
   cursor: default;
+}
+.Header {
+  align-items: flex-end;
 }
 .Footer li:last-child {
   margin-left: auto;
@@ -132,31 +135,31 @@ ul li {
   color: #eeeeee;
   text-decoration: none;
 }
-/* 厳密に真ん中じゃない */
-.Header h1 {
-  margin-left: auto;
-}
 .Header h2 {
   margin: 0;
 }
 .Header > div {
-  margin: 2% 1% 2% auto;
+  position: absolute;
+  top: 0px;
+  right: 0px;
   display: flex;
-  height: 100%;
+  align-items: flex-end;
+  height: 70px;
 }
 .Header button {
+  padding: 0.5rem auto;
   box-sizing: border-box;
-  height: 45%;
-  width: 100%;
   background: #0f1419;
   color: #eeeeee;
   font-size: 1rem;
   cursor: pointer;
   flex: 1;
-  padding: 0.5rem 1.5rem;
   transition: all 0.2s linear;
+  border-radius: 3px;
 }
-.Footer button {
+.Footer button,
+.Search button {
+  border-radius: 3px;
   background: #0f1419;
   color: #eeeeee;
   font-size: 1rem;
@@ -166,7 +169,7 @@ ul li {
 }
 .Header button:hover,
 .Footer button:hover {
-  background: #ffffffbf;
+  background: #eeeeee;
   color: #0f1419;
 }
 .Header .spinner {
@@ -175,11 +178,11 @@ ul li {
 }
 /* | Menu, Auth */
 .signinOption i {
-  margin-right: 0.5rem;
+  margin: 0 0.5rem;
 }
 .signinOption {
   cursor: pointer;
-  padding: 0.5rem 4rem 0.5rem 1rem;
+  padding: 0.5rem 0;
   list-style-type: none;
   border: 1px solid #0f1419;
   border-radius: 3px 3px 3px 3px;
@@ -204,6 +207,7 @@ ul li {
 }
 .modeSelector > li {
   cursor: pointer;
+  border-radius: 3px;
   flex: 1;
   border: 1px #282c34 solid;
   transition: all linear 0.2s;
@@ -244,9 +248,12 @@ input[type="submit"]:hover {
   color: #eeeeee;
 }
 
-.Search > input[type="text"] {
+.Search > input[type="search"] {
+  font-size: 1.3rem;
   width: 40%;
   min-width: 170px;
+  border-radius: 3px;
+  -webkit-appearance: none;
 }
 
 /* | Movie */
@@ -256,17 +263,9 @@ input[type="submit"]:hover {
   max-width: 25%;
 }
 
-/* .add-movies {
-  text-align: center;
-}
-
-.add-movies button {
-  font-size: 16px;
-  padding: 8px;
-  margin: 0 10px 30px 10px;
-} */
-.movieFooter {
+.movie-footer {
   display: flex;
+  flex-direction: row;
   justify-content: center;
 }
 .year,
@@ -282,6 +281,7 @@ input[type="submit"]:hover {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+  cursor: pointer;
   transition: all linear 0.1s;
 }
 .favoriteBtn:hover {

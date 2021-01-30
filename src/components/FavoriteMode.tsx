@@ -21,7 +21,14 @@ const FavoriteMode: React.FC = (): JSX.Element => {
       {currentUser ? (
         <div className="toolbox" />
       ) : (
-        <div style={{ fontSize: "large" }} className="notSignedInMessage">
+        <div
+          style={{
+            fontSize: "large",
+            border: "solid #0f1419",
+            borderWidth: "1px 0",
+          }}
+          className="notSignedInMessage"
+        >
           We need you to sign in to use this functionality.
         </div>
       )}
