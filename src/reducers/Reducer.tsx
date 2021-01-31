@@ -27,7 +27,6 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         showingMovies: switchShowingMovies(),
       };
     case "fetch-request":
-      console.log(action.value);
       return {
         ...state,
         loadingSearch: true,
@@ -37,7 +36,7 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
       };
     case "fetch-success":
       const movies = (() => {
-        if (action.needReflesh) {
+        if (action.needReplaced) {
           return action.payload;
         }
         return state.fetchedMovies.concat(...action.payload);

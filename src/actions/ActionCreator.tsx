@@ -5,7 +5,7 @@ import { Mode } from "../contexts/Context";
 export type ACTIONTYPE =
   | { type: "modal-toggle"; isShow: boolean; authMessage: string }
   | { type: "fetch-request"; value: string; page: number }
-  | { type: "fetch-success"; payload: MovieObject[]; needReflesh: boolean }
+  | { type: "fetch-success"; payload: MovieObject[]; needReplaced: boolean }
   | { type: "fetch-failure"; error: string }
   | { type: "database-fetch-request" }
   | { type: "database-add-request" }

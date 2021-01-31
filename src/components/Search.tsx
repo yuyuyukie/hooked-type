@@ -1,28 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../contexts/Context";
-import { search } from "../services/omdb";
+import { omdbFetch } from "../services/omdb";
 
 const Search: React.FunctionComponent = (): JSX.Element => {
-  const dispatch = useContext(Context).dispatch;
+  const { state, dispatch } = useContext(Context);
 
-  useEffect(() => {
-    search(dispatch, "man", true);
-  }, [dispatch]);
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(state.searchValue);
   const handleSearchInputChanges = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setSearchValue(e.target.value);
   };
-  const resetInputField = (): void => {
-    setSearchValue("");
-  };
   const callSearchFunction = (
-    e: React.MouseEvent<HTMLInputElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     e.preventDefault();
-    search(dispatch, searchValue, true);
-    resetInputField();
+    omdbFetch(dispatch, searchValue, true);
   };
 
   return (
@@ -30,9 +23,11 @@ const Search: React.FunctionComponent = (): JSX.Element => {
       <input
         value={searchValue}
         onChange={handleSearchInputChanges}
-        type="text"
+        type="search"
       />
-      <input onClick={callSearchFunction} type="submit" value="SEARCH" />
+      <button onClick={callSearchFunction} type="submit">
+        SEARCH
+      </button>
     </form>
   );
 };
