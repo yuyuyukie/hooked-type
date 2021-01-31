@@ -1,20 +1,15 @@
 import React, { useContext } from "react";
 import { toggleShowModal } from "../actions/ActionCreator";
 import { Context } from "../contexts/Context";
-import { signinGoogle } from "../services/firebase";
+import { signinAnonymously, signinGoogle } from "../services/firebase";
 
 const Authentication: React.FC = () => {
   console.log("auth");
-  const dispatch = useContext(Context).dispatch;
+  const { state, dispatch } = useContext(Context);
+  const authMessage = state.authMessage;
   return (
     <div className="Authenticaion">
-      <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
-        Select the option <br></br>to sign in/up.
-      </p>
-      {/* <StyledFirebaseAuth
-        uiConfig={uiConfig}
-        firebaseAuth={firebaseApp.auth()}
-      /> */}
+      <p style={{ textAlign: "center", fontSize: "1.5rem" }}>{authMessage}</p>
       <ul>
         <li
           className="signinOption"
@@ -26,7 +21,19 @@ const Authentication: React.FC = () => {
               })
           }
         >
+          <i className="fab fa-google"></i>
           Google
+        </li>
+        <li
+          className="signinOption"
+          onClick={() => {
+            signinAnonymously().finally(() => {
+              toggleShowModal(dispatch, false);
+            });
+          }}
+        >
+          <i className="fas fa-user"></i>
+          As Guest
         </li>
       </ul>
     </div>

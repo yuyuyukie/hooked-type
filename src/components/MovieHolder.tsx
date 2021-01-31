@@ -1,13 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { Context, Mode } from "../contexts/Context";
 import { fetchMovies } from "../services/firebase";
-import { search } from "../services/omdb";
+import { omdbFetch } from "../services/omdb";
 import { MovieObject } from "./App";
 import FavoriteMode, { isMovieObject } from "./FavoriteMode";
 import Movie from "./Movie";
 import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
+import { isBrowser } from "react-device-detect";
+
+const isBottom = () => {
+  return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
+};
 
 const MovieHolder: React.FC = () => {
   const { state, dispatch } = useContext(Context);
@@ -21,6 +26,58 @@ const MovieHolder: React.FC = () => {
     searchValue,
     pageNumber,
   } = state;
+
+  // スマホのスクロール用
+  useEffect(() => {
+    let moveDistance = 0;
+    let isSwiping = false;
+    const detectTouch = (e: TouchEvent) => {
+      if (e.targetTouches.length === 1) {
+        document.body.style.background = "red";
+        isSwiping = true;
+      }
+    };
+    const handleMove = () => {
+      if (isSwiping) {
+        moveDistance++;
+      }
+    };
+    const checkScroll = () => {
+      if (
+        moveDistance > 10 &&
+        isBottom() &&
+        searchValue &&
+        !loadingSearch &&
+        currentMode === Mode.search
+      ) {
+        document.body.style.background = "blue";
+        omdbFetch(dispatch, searchValue, false, pageNumber);
+      }
+      moveDistance = 0;
+      isSwiping = false;
+    };
+    document
+      .getElementById("movie-container")
+      ?.addEventListener("touchmove", handleMove);
+    document
+      .getElementById("movie-container")
+      ?.addEventListener("touchstart", detectTouch);
+    document
+      .getElementById("movie-container")
+      ?.addEventListener("touchend", checkScroll);
+    return () => {
+      document
+        .getElementById("movie-container")
+        ?.removeEventListener("touchmove", detectTouch);
+      document
+        .getElementById("movie-container")
+        ?.addEventListener("touchstart", detectTouch);
+      document
+        .getElementById("movie-container")
+        ?.addEventListener("touchend", checkScroll);
+    };
+  }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
+
   // SearchMode時にscrollを検知してfetchさせる
   // unmount時にremoveEventListener
   useEffect(() => {
@@ -29,29 +86,25 @@ const MovieHolder: React.FC = () => {
       // innerHeightがブラウザのビューポートの高さで、それの合計の最大値が
       // 全体の高さ(scrollHeight, clientHeight)と等しい
       if (
+        isBrowser &&
         currentMode === Mode.search &&
         !loadingSearch &&
-        window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight &&
-        searchValue &&
-        currentUser
+        isBottom() &&
+        searchValue
       ) {
-        console.log(
-          "wheel",
-          window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight
-        );
-        search(dispatch, searchValue, false, pageNumber + 1);
+        omdbFetch(dispatch, searchValue, false, pageNumber);
       }
     };
     window.addEventListener("wheel", scrollToSearch);
-    return () => window.removeEventListener("wheel", scrollToSearch);
-  }, [
-    currentMode,
-    dispatch,
-    loadingSearch,
-    pageNumber,
-    searchValue,
-    currentUser,
-  ]);
+
+    return () => {
+      window.removeEventListener("wheel", scrollToSearch);
+    };
+  }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
+  // initial search
+  useEffect(() => {
+    omdbFetch(dispatch, "man", true);
+  }, [dispatch]);
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser && dispatch) {
@@ -102,13 +155,6 @@ const MovieHolder: React.FC = () => {
         <FavoriteMode />
       </PageSwitcher>
       <MovieStyler>{showMovies()}</MovieStyler>
-      {!currentUser && currentMode === Mode.search ? (
-        <div style={{ fontSize: "large", border: `1px solid #0f1419` }}>
-          To use sequencial searching, please sign in.
-        </div>
-      ) : (
-        ""
-      )}
     </>
   );
 };

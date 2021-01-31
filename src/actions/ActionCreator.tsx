@@ -3,9 +3,9 @@ import firebase from "../firebase";
 import { Mode } from "../contexts/Context";
 
 export type ACTIONTYPE =
-  | { type: "modal-toggle"; isShow: boolean }
+  | { type: "modal-toggle"; isShow: boolean; authMessage: string }
   | { type: "fetch-request"; value: string; page: number }
-  | { type: "fetch-success"; payload: MovieObject[]; needReflesh: boolean }
+  | { type: "fetch-success"; payload: MovieObject[]; needReplaced: boolean }
   | { type: "fetch-failure"; error: string }
   | { type: "database-fetch-request" }
   | { type: "database-add-request" }
@@ -40,7 +40,8 @@ export const switchMode = (
 
 export const toggleShowModal = (
   dispatch: React.Dispatch<ACTIONTYPE> | null,
-  isShow: boolean
+  isShow: boolean,
+  authMessage = "Sign in"
 ) => {
   if (dispatch == null) {
     return;
@@ -48,6 +49,7 @@ export const toggleShowModal = (
   const action: ACTIONTYPE = {
     type: "modal-toggle",
     isShow: isShow,
+    authMessage: authMessage,
   };
   dispatch(action);
 };

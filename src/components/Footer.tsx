@@ -4,15 +4,7 @@ export const Footer: React.FC = () => {
   const h = document.querySelector("#app-root")?.scrollHeight;
   const height = h ? h : 0;
   return (
-    <footer
-      style={
-        height > window.innerHeight
-          ? {}
-          : // 文書のheightが低ければページ下部に固定
-            { position: "absolute", bottom: "0", width: "100%" }
-      }
-      className="Footer"
-    >
+    <footer className="Footer">
       <ul
         style={{
           display: "flex",

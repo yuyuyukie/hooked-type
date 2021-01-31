@@ -11,10 +11,18 @@ export const signinGoogle = () => {
     .auth()
     .signInWithPopup(provider)
     .then(function () {
-      // This gives you a Google Access Token.
-      // The signed-in user info.
+      console.log("signed in with Google successfully");
     })
     .catch((e) => console.error(e));
+};
+export const signinAnonymously = () => {
+  return firebaseApp
+    .auth()
+    .signInAnonymously()
+    .then(() => {
+      console.log("signed in as a guest");
+    })
+    .catch((e) => console.log(e));
 };
 export const signout = () => {
   return firebaseApp

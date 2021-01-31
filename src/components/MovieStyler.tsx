@@ -5,7 +5,10 @@ type Props = {
 };
 const MovieStyler: React.FC<Props> = (props) => {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}>
+    <div
+      id="movie-container"
+      style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+    >
       {props.children}
     </div>
   );

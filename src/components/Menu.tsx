@@ -5,6 +5,16 @@ import firebase from "../firebase";
 import { signout } from "../services/firebase";
 import Authentication from "./Authentication";
 import Modal from "./Modal";
+export const createAuth = (isShowModal: boolean) => {
+  if (isShowModal) {
+    return (
+      <Modal>
+        <Authentication />
+      </Modal>
+    );
+  }
+  return "";
+};
 
 const Menu: React.FC = (): JSX.Element => {
   const { state, dispatch } = useContext(Context);
@@ -17,7 +27,10 @@ const Menu: React.FC = (): JSX.Element => {
           id="isLoggedIn"
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <div>Hello, {user.displayName}</div>
+          <div>
+            Hello,{" "}
+            {user.displayName ? user.displayName.trim().split(" ")[0] : "Guest"}
+          </div>
           <button id="logoutButton" type="button" onClick={() => signout()}>
             Logout
           </button>
@@ -34,10 +47,10 @@ const Menu: React.FC = (): JSX.Element => {
             type="button"
             id="SignInButton"
             onClick={() => {
-              toggleShowModal(dispatch, true);
+              toggleShowModal(dispatch, true, "Select the option to sign in.");
             }}
           >
-            Sign in/up
+            Sign in
           </button>
         </div>
       );
@@ -47,15 +60,8 @@ const Menu: React.FC = (): JSX.Element => {
   return (
     <div id="Menu">
       {createMenu(currentUser)}
-      {isShowModal ? (
-        <Modal>
-          <Authentication />
-        </Modal>
-      ) : (
-        ""
-      )}
+      {createAuth(isShowModal)}
     </div>
   );
 };
-// Authentication.contextTypes = IsLoggedInContext;
 export default Menu;

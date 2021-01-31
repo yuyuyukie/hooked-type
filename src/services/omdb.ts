@@ -1,23 +1,31 @@
 import { ACTIONTYPE } from "../actions/ActionCreator";
 
-export const search = (
+const searchHistory: string[] = [];
+const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+
+export const omdbFetch = (
   dispatch: React.Dispatch<ACTIONTYPE> | null,
   searchValue: string,
-  needReflesh: boolean,
+  needReplaced: boolean,
   pageNumber = 1
 ) => {
   if (!dispatch) {
     return;
   }
-  console.log(searchValue, pageNumber);
+  // スクロールサーチ以外での同一キーワードによる検索の回避
+  if (needReplaced && searchValue === searchHistory[searchHistory.length - 1]) {
+    return;
+  }
+  const newPageNumber = needReplaced ? 1 : pageNumber + 1;
   dispatch({
     type: "fetch-request",
     value: searchValue,
-    page: pageNumber,
+    page: newPageNumber,
   });
-  const MOVIE_API_URL = "https://www.omdbapi.com/?apikey=1105ff36&";
+  searchHistory.push(searchValue);
+
   const searchUrl = `s=${searchValue}&`;
-  const pageUrl = `page=${pageNumber}&`;
+  const pageUrl = `page=${newPageNumber}&`;
   const fullUrl: string = MOVIE_API_URL + searchUrl + pageUrl;
   (async function (url: string): Promise<void> {
     const response = await fetch(url);
@@ -26,7 +34,7 @@ export const search = (
       dispatch({
         type: "fetch-success",
         payload: JSONResponse.Search,
-        needReflesh: needReflesh,
+        needReplaced: needReplaced,
       });
     } else {
       dispatch({
