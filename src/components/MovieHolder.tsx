@@ -10,6 +10,7 @@ import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 import { isBrowser } from "react-device-detect";
 import { isMobile } from "react-device-detect";
+import { render } from "@testing-library/react";
 
 const isBottom = () => {
   return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
@@ -27,6 +28,9 @@ const MovieHolder: React.FC = () => {
     searchValue,
     pageNumber,
   } = state;
+  useEffect(() => {
+    console.log("Re-render");
+  });
 
   // スマホのスクロール用
   useEffect(() => {

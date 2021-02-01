@@ -3,7 +3,6 @@ import { MovieObject } from "./App";
 import { Context } from "../contexts/Context";
 import { addFavorite, deleteFavorite } from "../services/firebase";
 import FavoriteBtn from "./FavoriteBtn";
-import { createAuth } from "./Menu";
 import { toggleShowModal } from "../actions/ActionCreator";
 
 type Props = {

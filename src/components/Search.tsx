@@ -1,16 +1,12 @@
 import React, { useContext, useState } from "react";
+import { changeSearchValue } from "../actions/ActionCreator";
 import { Context } from "../contexts/Context";
 import { omdbFetch } from "../services/omdb";
 
 const Search: React.FunctionComponent = (): JSX.Element => {
   const { state, dispatch } = useContext(Context);
+  const { searchValue } = state;
 
-  const [searchValue, setSearchValue] = useState(state.searchValue);
-  const handleSearchInputChanges = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSearchValue(e.target.value);
-  };
   const callSearchFunction = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
@@ -22,7 +18,7 @@ const Search: React.FunctionComponent = (): JSX.Element => {
     <form className="Search">
       <input
         value={searchValue}
-        onChange={handleSearchInputChanges}
+        onChange={(e) => changeSearchValue(dispatch, e.target.value)}
         type="search"
       />
       <button onClick={callSearchFunction} type="submit">

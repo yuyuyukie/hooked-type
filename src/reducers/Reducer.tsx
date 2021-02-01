@@ -98,6 +98,11 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         favoriteMovies: [...state.favoriteMovies, action.target],
         loadingDatabase: false,
       };
+    case "change-searchvalue":
+      return {
+        ...state,
+        searchValue: action.payload,
+      };
     default:
       return state;
   }

@@ -22,7 +22,8 @@ export type ACTIONTYPE =
       data: firebase.User | null;
     }
   | { type: "auth-state-failure"; error: any }
-  | { type: "mode-switch"; mode: typeof Mode[keyof typeof Mode] };
+  | { type: "mode-switch"; mode: typeof Mode[keyof typeof Mode] }
+  | { type: "change-searchvalue"; payload: string };
 
 export const switchMode = (
   dispatch: React.Dispatch<ACTIONTYPE> | null,
@@ -50,6 +51,20 @@ export const toggleShowModal = (
     type: "modal-toggle",
     isShow: isShow,
     authMessage: authMessage,
+  };
+  dispatch(action);
+};
+
+export const changeSearchValue = (
+  dispatch: React.Dispatch<ACTIONTYPE> | null,
+  newSearchValue: string
+) => {
+  if (dispatch == null) {
+    return;
+  }
+  const action: ACTIONTYPE = {
+    type: "change-searchvalue",
+    payload: newSearchValue,
   };
   dispatch(action);
 };
