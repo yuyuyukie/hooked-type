@@ -9,6 +9,7 @@ import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 import { isBrowser } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 const isBottom = () => {
   return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
@@ -33,7 +34,6 @@ const MovieHolder: React.FC = () => {
     let isSwiping = false;
     const detectTouch = (e: TouchEvent) => {
       if (e.targetTouches.length === 1) {
-        document.body.style.background = "red";
         isSwiping = true;
       }
     };
@@ -50,7 +50,6 @@ const MovieHolder: React.FC = () => {
         !loadingSearch &&
         currentMode === Mode.search
       ) {
-        document.body.style.background = "blue";
         omdbFetch(dispatch, searchValue, false, pageNumber);
       }
       moveDistance = 0;
@@ -155,6 +154,19 @@ const MovieHolder: React.FC = () => {
         <FavoriteMode />
       </PageSwitcher>
       <MovieStyler>{showMovies()}</MovieStyler>
+      {isMobile ? (
+        <button
+          type="button"
+          id="more-button"
+          onClick={() => {
+            omdbFetch(dispatch, searchValue, false, pageNumber);
+          }}
+        >
+          More Movies
+        </button>
+      ) : (
+        ""
+      )}
     </>
   );
 };

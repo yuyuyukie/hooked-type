@@ -158,7 +158,8 @@ ul li {
   border-radius: 3px;
 }
 .Footer button,
-.Search button {
+.Search button,
+#more-button {
   border-radius: 3px;
   background: #0f1419;
   color: #eeeeee;
@@ -168,7 +169,8 @@ ul li {
   transition: all 0.2s linear;
 }
 .Header button:hover,
-.Footer button:hover {
+.Footer button:hover,
+#more-button:hover {
   background: #eeeeee;
   color: #0f1419;
 }
