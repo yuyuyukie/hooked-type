@@ -46,9 +46,11 @@
   "devDependencies": {
     "@testing-library/react-hooks": "^5.0.0",
     "@types/react-test-renderer": "^17.0.0",
+    "@types/styled-components": "^5.1.7",
     "eslint-plugin-react-hooks": "^4.2.0",
     "react-device-detect": "^1.15.0",
     "react-test-renderer": "^17.0.1",
+    "styled-components": "^5.2.1",
     "ts-jest": "^26.4.4"
   },
   "jest": {
