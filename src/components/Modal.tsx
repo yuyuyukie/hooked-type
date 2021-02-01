@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { toggleShowModal } from "../actions/ActionCreator";
-import { Context } from "../contexts/Context";
+import { switchShowModal } from "../actions/ActionCreator";
+import { Context, ModalMode } from "../contexts/Context";
 type Props = {
   children: React.ReactNode;
 };
@@ -9,12 +9,15 @@ type Props = {
 const Modal: React.FC<Props> = (props) => {
   const modalRoot = document.querySelector("#modal-root");
   const modalContainer = document.createElement("div");
-  const isShowModal = useContext(Context).state.isShowModal;
+  const modalMode = useContext(Context).state.modalMode;
   const dispatch = useContext(Context).dispatch;
   modalContainer.addEventListener("click", (event) => {
     // ModalをクリックしたときのみModalを非表示
-    if (isShowModal && event.target === event.currentTarget) {
-      toggleShowModal(dispatch, false);
+    if (
+      modalMode !== ModalMode.hidden &&
+      event.target === event.currentTarget
+    ) {
+      switchShowModal(dispatch, ModalMode.hidden);
     }
   });
   useEffect(() => {

@@ -2,15 +2,22 @@ import { createContext } from "react";
 import { MovieObject } from "../components/App";
 import firebase from "../firebase";
 import { ACTIONTYPE } from "../actions/ActionCreator";
+import { DetailedMovieObject } from "../services/omdb";
+import Modal from "../components/Modal";
 
 export const Mode = {
   search: "search",
   favorite: "favorite",
 };
+export const ModalMode = {
+  auth: "auth",
+  detail: "detail",
+  hidden: "hidden",
+};
 
 export type State = {
   currentMode: typeof Mode[keyof typeof Mode];
-  isShowModal: boolean;
+  modalMode: typeof ModalMode[keyof typeof ModalMode];
   authMessage: string;
   loadingSearch: boolean;
   loadingDatabase: boolean;
@@ -21,6 +28,7 @@ export type State = {
   currentUser: firebase.User | null;
   searchValue: string;
   pageNumber: number;
+  detailMovie: DetailedMovieObject | null;
 };
 
 export type ContextType = {
@@ -29,7 +37,7 @@ export type ContextType = {
 };
 export const initialState: State = {
   currentMode: Mode.search,
-  isShowModal: false,
+  modalMode: ModalMode.hidden,
   authMessage: "",
   loadingSearch: false,
   loadingDatabase: false,
@@ -40,6 +48,7 @@ export const initialState: State = {
   currentUser: null,
   searchValue: "",
   pageNumber: 1,
+  detailMovie: null,
 };
 
 const initialContext: ContextType = {

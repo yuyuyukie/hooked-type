@@ -4,10 +4,10 @@ import { ACTIONTYPE } from "../actions/ActionCreator";
 export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
   console.log(action.type);
   switch (action.type) {
-    case "modal-toggle":
+    case "modal-switch":
       return {
         ...state,
-        isShowModal: action.isShow,
+        modalMode: action.mode,
         authMessage: action.authMessage,
       };
     case "mode-switch":
@@ -53,6 +53,18 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         ...state,
         loadingSearch: false,
         errorMessage: action.error,
+      };
+    case "fetch-detail-request":
+      return {
+        ...state,
+        loadingSearch: true,
+        errorMessage: null,
+      };
+    case "fetch-detail-success":
+      return {
+        ...state,
+        loadingSearch: false,
+        detailMovie: action.payload,
       };
     case "auth-state-changed":
       return {

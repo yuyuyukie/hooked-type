@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { toggleShowModal } from "../actions/ActionCreator";
-import { Context } from "../contexts/Context";
+import { switchShowModal } from "../actions/ActionCreator";
+import { Context, ModalMode } from "../contexts/Context";
 import firebase from "../firebase";
 import { signout } from "../services/firebase";
 import Authentication from "./Authentication";
 import Modal from "./Modal";
-export const createAuth = (isShowModal: boolean) => {
-  if (isShowModal) {
+export const createAuth = (mode: typeof ModalMode[keyof typeof ModalMode]) => {
+  if (mode === ModalMode.auth) {
     return (
       <Modal>
         <Authentication />
@@ -18,7 +18,7 @@ export const createAuth = (isShowModal: boolean) => {
 
 const Menu: React.FC = (): JSX.Element => {
   const { state, dispatch } = useContext(Context);
-  const { isShowModal, currentUser } = state;
+  const { modalMode, currentUser } = state;
   const createMenu = (user: firebase.User | null) => {
     // Login時
     if (user) {
@@ -47,7 +47,11 @@ const Menu: React.FC = (): JSX.Element => {
             type="button"
             id="SignInButton"
             onClick={() => {
-              toggleShowModal(dispatch, true, "Select the option to sign in.");
+              switchShowModal(
+                dispatch,
+                ModalMode.auth,
+                "Select the option to sign in."
+              );
             }}
           >
             Sign in
@@ -60,7 +64,7 @@ const Menu: React.FC = (): JSX.Element => {
   return (
     <div id="Menu">
       {createMenu(currentUser)}
-      {createAuth(isShowModal)}
+      {createAuth(modalMode)}
     </div>
   );
 };

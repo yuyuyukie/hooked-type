@@ -1,12 +1,19 @@
 import { MovieObject } from "../components/App";
 import firebase from "../firebase";
-import { Mode } from "../contexts/Context";
+import { ModalMode, Mode } from "../contexts/Context";
+import { DetailedMovieObject } from "../services/omdb";
 
 export type ACTIONTYPE =
-  | { type: "modal-toggle"; isShow: boolean; authMessage: string }
+  | {
+      type: "modal-switch";
+      mode: typeof ModalMode[keyof typeof ModalMode];
+      authMessage: string;
+    }
   | { type: "fetch-request"; value: string; page: number }
   | { type: "fetch-success"; payload: MovieObject[]; needReplaced: boolean }
   | { type: "fetch-failure"; error: string }
+  | { type: "fetch-detail-request" }
+  | { type: "fetch-detail-success"; payload: DetailedMovieObject }
   | { type: "database-fetch-request" }
   | { type: "database-add-request" }
   | { type: "database-delete-request" }
@@ -39,17 +46,17 @@ export const switchMode = (
   dispatch(action);
 };
 
-export const toggleShowModal = (
+export const switchShowModal = (
   dispatch: React.Dispatch<ACTIONTYPE> | null,
-  isShow: boolean,
-  authMessage = "Sign in"
+  modalMode: typeof ModalMode[keyof typeof ModalMode],
+  authMessage = ""
 ) => {
   if (dispatch == null) {
     return;
   }
   const action: ACTIONTYPE = {
-    type: "modal-toggle",
-    isShow: isShow,
+    type: "modal-switch",
+    mode: modalMode,
     authMessage: authMessage,
   };
   dispatch(action);

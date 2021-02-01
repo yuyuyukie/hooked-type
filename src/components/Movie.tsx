@@ -1,9 +1,19 @@
 import React, { useContext } from "react";
 import { MovieObject } from "./App";
-import { Context } from "../contexts/Context";
+import { Context, ModalMode } from "../contexts/Context";
 import { addFavorite, deleteFavorite } from "../services/firebase";
 import FavoriteBtn from "./FavoriteBtn";
-import { toggleShowModal } from "../actions/ActionCreator";
+import { switchShowModal } from "../actions/ActionCreator";
+import { fetchMovieDetail } from "../services/omdb";
+import styled from "styled-components";
+
+const StyledMovie = styled.div`
+  &:hover {
+    cursor: pointer;
+    border: 1px solid #0f1419;
+    border-radius: 3px;
+  }
+`;
 
 type Props = {
   key: string;
@@ -22,9 +32,9 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const movie = props.movie;
   const poster =
     movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
-  const handleClick = (bool: boolean) => {
+  const handleFavoriteClick = (bool: boolean) => {
     if (!currentUser) {
-      toggleShowModal(dispatch, true, "Sign in to check this movie!");
+      switchShowModal(dispatch, ModalMode.auth, "Sign in to check this movie!");
       return;
     }
     // boolは現在の状態なので、逆の処理を行う
@@ -51,9 +61,16 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
         });
     }
   };
+  const handleDetailClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (e.currentTarget.classList.contains("favoriteBtn")) return;
+    fetchMovieDetail(dispatch, movie.imdbID);
+    switchShowModal(dispatch, ModalMode.detail);
+  };
 
   return (
-    <div className="Movie">
+    <StyledMovie className="Movie" onClick={(e) => handleDetailClick(e)}>
       <h2
         style={{
           fontSize: `${
@@ -72,10 +89,10 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
         <div className="year">({movie.Year})</div>
         <FavoriteBtn
           isFavorite={movie.favorite ? true : false}
-          handleClick={handleClick}
+          handleClick={handleFavoriteClick}
         />
       </div>
-    </div>
+    </StyledMovie>
   );
 };
 export default Movie;
