@@ -10,7 +10,6 @@ import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 import { isBrowser } from "react-device-detect";
 import { isMobile } from "react-device-detect";
-import { render } from "@testing-library/react";
 
 const isBottom = () => {
   return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
@@ -28,9 +27,6 @@ const MovieHolder: React.FC = () => {
     searchValue,
     pageNumber,
   } = state;
-  useEffect(() => {
-    console.log("Re-render");
-  });
 
   // スマホのスクロール用
   useEffect(() => {
@@ -71,7 +67,7 @@ const MovieHolder: React.FC = () => {
     return () => {
       document
         .getElementById("movie-container")
-        ?.removeEventListener("touchmove", detectTouch);
+        ?.removeEventListener("touchmove", handleMove);
       document
         .getElementById("movie-container")
         ?.addEventListener("touchstart", detectTouch);
@@ -166,7 +162,7 @@ const MovieHolder: React.FC = () => {
             omdbFetch(dispatch, searchValue, false, pageNumber);
           }}
         >
-          More Movies
+          Scroll-Down or Push Here
         </button>
       ) : (
         ""
