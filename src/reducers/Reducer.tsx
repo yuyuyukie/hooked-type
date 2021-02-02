@@ -1,4 +1,4 @@
-import { State, Mode } from "../contexts/Context";
+import { State, Mode, ModalMode } from "../contexts/Context";
 import { ACTIONTYPE } from "../actions/ActionCreator";
 
 export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
@@ -9,6 +9,8 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         ...state,
         modalMode: action.mode,
         authMessage: action.authMessage,
+        detailMovie:
+          action.mode === ModalMode.hidden ? null : state.detailMovie,
       };
     case "mode-switch":
       const switchShowingMovies = () => {
@@ -65,6 +67,11 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         ...state,
         loadingSearch: false,
         detailMovie: action.payload,
+      };
+    case "clear-detail":
+      return {
+        ...state,
+        detailMovie: null,
       };
     case "auth-state-changed":
       return {

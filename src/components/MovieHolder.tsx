@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Context, Mode } from "../contexts/Context";
+import { Context, ModalMode, Mode } from "../contexts/Context";
 import { fetchMovies } from "../services/firebase";
 import { omdbFetch } from "../services/omdb";
 import { MovieObject } from "./App";
@@ -10,6 +10,8 @@ import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 import { isBrowser } from "react-device-detect";
 import { isMobile } from "react-device-detect";
+import MovieDetail from "./MovieDetail";
+import Modal from "./Modal";
 
 const isBottom = () => {
   return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
@@ -26,6 +28,7 @@ const MovieHolder: React.FC = () => {
     favoriteMovies,
     searchValue,
     pageNumber,
+    modalMode,
   } = state;
 
   // スマホのスクロール用
@@ -100,10 +103,12 @@ const MovieHolder: React.FC = () => {
       window.removeEventListener("wheel", scrollToSearch);
     };
   }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
+
   // initial search
   useEffect(() => {
     omdbFetch(dispatch, "man", true);
   }, [dispatch]);
+
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser && dispatch) {
@@ -126,6 +131,7 @@ const MovieHolder: React.FC = () => {
         .catch((e) => console.error(e));
     }
   }, [currentUser, dispatch]);
+
   const showMovies = () => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
@@ -147,6 +153,18 @@ const MovieHolder: React.FC = () => {
       }
     );
   };
+
+  const createDetail = () => {
+    if (modalMode === ModalMode.detail) {
+      return (
+        <Modal>
+          <MovieDetail />
+        </Modal>
+      );
+    }
+    return "";
+  };
+
   return (
     <>
       <PageSwitcher showIndex={currentMode === "search" ? 0 : 1}>
@@ -167,6 +185,7 @@ const MovieHolder: React.FC = () => {
       ) : (
         ""
       )}
+      {createDetail()}
     </>
   );
 };

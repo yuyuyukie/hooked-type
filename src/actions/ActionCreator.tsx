@@ -2,6 +2,7 @@ import { MovieObject } from "../components/App";
 import firebase from "../firebase";
 import { ModalMode, Mode } from "../contexts/Context";
 import { DetailedMovieObject } from "../services/omdb";
+import { addFavorite, deleteFavorite } from "../services/firebase";
 
 export type ACTIONTYPE =
   | {
@@ -14,6 +15,7 @@ export type ACTIONTYPE =
   | { type: "fetch-failure"; error: string }
   | { type: "fetch-detail-request" }
   | { type: "fetch-detail-success"; payload: DetailedMovieObject }
+  | { type: "clear-detail" }
   | { type: "database-fetch-request" }
   | { type: "database-add-request" }
   | { type: "database-delete-request" }
@@ -51,6 +53,7 @@ export const switchShowModal = (
   modalMode: typeof ModalMode[keyof typeof ModalMode],
   authMessage = ""
 ) => {
+  console.log(33);
   if (dispatch == null) {
     return;
   }
@@ -74,4 +77,63 @@ export const changeSearchValue = (
     payload: newSearchValue,
   };
   dispatch(action);
+};
+
+// Detailedを変換してMovieObjectとして扱えるようにする
+const downgradeDetailedMovie = (
+  movie: DetailedMovieObject | MovieObject
+): MovieObject => {
+  const { Title, Year, Type, Poster, imdbID, favorite } = movie;
+  const movieObject: MovieObject = {
+    Title: Title,
+    Type: Type,
+    Poster: Poster,
+    Year: Year,
+    imdbID: imdbID,
+    favorite: favorite ? true : false,
+  };
+  return movieObject;
+};
+
+export const changeFavorite = (
+  dispatch: React.Dispatch<ACTIONTYPE> | null,
+  currentUser: firebase.User | null,
+  isCurrentlyFavorite: boolean,
+  movie: MovieObject | DetailedMovieObject
+) => {
+  if (dispatch == null) return;
+  if (!currentUser) {
+    switchShowModal(dispatch, ModalMode.auth, "Sign in to check this movie!");
+    return;
+  }
+  if (isCurrentlyFavorite) {
+    dispatch({ type: "database-delete-request" });
+    deleteFavorite(currentUser.uid, movie.Title)
+      .then(() => {
+        dispatch({
+          type: "database-delete-success",
+          target: downgradeDetailedMovie(movie),
+        });
+        console.log("deleted a movie from the database");
+      })
+      .catch((e) => {
+        dispatch({ type: "database-failure", error: e });
+      });
+  } else {
+    dispatch({ type: "database-add-request" });
+    addFavorite(currentUser.uid, movie)
+      .then(() => {
+        dispatch({ type: "database-add-success", target: movie });
+        console.log("your favorite movie has been written to the database");
+      })
+      .catch((e) => {
+        dispatch({ type: "database-failure", error: e });
+        console.error("database write error:", e);
+      });
+  }
+};
+
+export const unmountDetail = (dispatch: React.Dispatch<ACTIONTYPE> | null) => {
+  if (dispatch == null) return;
+  dispatch({ type: "clear-detail" });
 };
