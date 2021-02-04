@@ -5,8 +5,6 @@ import FavoriteBtn from "./FavoriteBtn";
 import { changeFavorite, switchShowModal } from "../actions/ActionCreator";
 import { DetailedMovieObject, fetchMovieDetail } from "../services/omdb";
 import styled from "styled-components";
-import Modal from "./Modal";
-import MovieDetail from "./MovieDetail";
 
 export const useFavorite = (movie: MovieObject | DetailedMovieObject) => {
   const { state, dispatch } = useContext(Context);
@@ -32,7 +30,6 @@ type Props = {
 };
 const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const context = useContext(Context);
-  const { currentUser, detailMovie, modalMode } = context.state;
   const dispatch = context.dispatch;
   if (dispatch == null) {
     throw new Error();
@@ -40,16 +37,13 @@ const Movie: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
   const movie = props.movie;
   const poster =
     movie.Poster === "N/A" ? DEFAULT_PLACEHOLDER_IMAGE : movie.Poster;
-  const handleDetailClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (e.currentTarget.classList.contains("favoriteBtn")) return;
+  const handleDetailClick = () => {
     fetchMovieDetail(dispatch, movie.imdbID);
     switchShowModal(dispatch, ModalMode.detail);
   };
 
   return (
-    <StyledMovie className="Movie" onClick={(e) => handleDetailClick(e)}>
+    <StyledMovie className="Movie" onClick={() => handleDetailClick()}>
       <h2
         style={{
           fontSize: `${

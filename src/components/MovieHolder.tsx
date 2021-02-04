@@ -3,7 +3,8 @@ import { Context, ModalMode, Mode } from "../contexts/Context";
 import { fetchMovies } from "../services/firebase";
 import { omdbFetch } from "../services/omdb";
 import { MovieObject } from "./App";
-import FavoriteMode, { isMovieObject } from "./FavoriteMode";
+import FavoriteMode from "./FavoriteMode";
+import { isMovieObject } from "../services/isMovieObject";
 import Movie from "./Movie";
 import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
@@ -12,10 +13,7 @@ import { isBrowser } from "react-device-detect";
 import { isMobile } from "react-device-detect";
 import MovieDetail from "./MovieDetail";
 import Modal from "./Modal";
-
-const isBottom = () => {
-  return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
-};
+import { isBottom } from "../services/isBottom";
 
 const MovieHolder: React.FC = () => {
   const { state, dispatch } = useContext(Context);

@@ -3,7 +3,6 @@ import { MovieObject } from "../components/App";
 import firebase from "../firebase";
 import { ACTIONTYPE } from "../actions/ActionCreator";
 import { DetailedMovieObject } from "../services/omdb";
-import Modal from "../components/Modal";
 
 export const Mode = {
   search: "search",

@@ -56,6 +56,7 @@ export type DetailedMovieObject = {
   imdbRating: string;
   imdbID: string;
   favorite?: boolean;
+  Genre: string;
   Type: string;
 };
 
