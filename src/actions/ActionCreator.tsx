@@ -132,8 +132,3 @@ export const changeFavorite = (
       });
   }
 };
-
-export const unmountDetail = (dispatch: React.Dispatch<ACTIONTYPE> | null) => {
-  if (dispatch == null) return;
-  dispatch({ type: "clear-detail" });
-};

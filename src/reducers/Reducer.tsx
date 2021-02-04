@@ -68,11 +68,6 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         loadingSearch: false,
         detailMovie: action.payload,
       };
-    case "clear-detail":
-      return {
-        ...state,
-        detailMovie: null,
-      };
     case "auth-state-changed":
       return {
         ...state,
