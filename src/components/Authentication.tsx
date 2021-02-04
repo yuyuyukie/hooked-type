@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { toggleShowModal } from "../actions/ActionCreator";
-import { Context } from "../contexts/Context";
+import { switchShowModal } from "../actions/ActionCreator";
+import { Context, ModalMode } from "../contexts/Context";
 import { signinAnonymously, signinGoogle } from "../services/firebase";
 
 const Authentication: React.FC = () => {
@@ -8,7 +8,7 @@ const Authentication: React.FC = () => {
   const { state, dispatch } = useContext(Context);
   const authMessage = state.authMessage;
   return (
-    <div className="Authenticaion">
+    <div style={{ background: "#eeeeee" }} className="Authenticaion">
       <p style={{ textAlign: "center", fontSize: "1.5rem" }}>{authMessage}</p>
       <ul>
         <li
@@ -17,7 +17,7 @@ const Authentication: React.FC = () => {
             signinGoogle()
               .catch((error) => console.error(error))
               .finally(() => {
-                toggleShowModal(dispatch, false);
+                switchShowModal(dispatch, ModalMode.hidden);
               })
           }
         >
@@ -28,7 +28,7 @@ const Authentication: React.FC = () => {
           className="signinOption"
           onClick={() => {
             signinAnonymously().finally(() => {
-              toggleShowModal(dispatch, false);
+              switchShowModal(dispatch, ModalMode.hidden);
             });
           }}
         >

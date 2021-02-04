@@ -1,8 +1,6 @@
 import React from "react";
 
 export const Footer: React.FC = () => {
-  const h = document.querySelector("#app-root")?.scrollHeight;
-  const height = h ? h : 0;
   return (
     <footer className="Footer">
       <ul

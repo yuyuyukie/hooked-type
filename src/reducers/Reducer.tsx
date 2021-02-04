@@ -1,14 +1,16 @@
-import { State, Mode } from "../contexts/Context";
+import { State, Mode, ModalMode } from "../contexts/Context";
 import { ACTIONTYPE } from "../actions/ActionCreator";
 
 export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
   console.log(action.type);
   switch (action.type) {
-    case "modal-toggle":
+    case "modal-switch":
       return {
         ...state,
-        isShowModal: action.isShow,
+        modalMode: action.mode,
         authMessage: action.authMessage,
+        detailMovie:
+          action.mode === ModalMode.hidden ? null : state.detailMovie,
       };
     case "mode-switch":
       const switchShowingMovies = () => {
@@ -54,6 +56,18 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         loadingSearch: false,
         errorMessage: action.error,
       };
+    case "fetch-detail-request":
+      return {
+        ...state,
+        loadingSearch: true,
+        errorMessage: null,
+      };
+    case "fetch-detail-success":
+      return {
+        ...state,
+        loadingSearch: false,
+        detailMovie: action.payload,
+      };
     case "auth-state-changed":
       return {
         ...state,
@@ -97,6 +111,11 @@ export const Reducer: React.Reducer<State, ACTIONTYPE> = (state, action) => {
         ...state,
         favoriteMovies: [...state.favoriteMovies, action.target],
         loadingDatabase: false,
+      };
+    case "change-searchvalue":
+      return {
+        ...state,
+        searchValue: action.payload,
       };
     default:
       return state;

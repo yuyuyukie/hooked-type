@@ -1,18 +1,19 @@
 import React, { useContext, useEffect } from "react";
-import { Context, Mode } from "../contexts/Context";
+import { Context, ModalMode, Mode } from "../contexts/Context";
 import { fetchMovies } from "../services/firebase";
 import { omdbFetch } from "../services/omdb";
 import { MovieObject } from "./App";
-import FavoriteMode, { isMovieObject } from "./FavoriteMode";
+import FavoriteMode from "./FavoriteMode";
+import { isMovieObject } from "../services/isMovieObject";
 import Movie from "./Movie";
 import MovieStyler from "./MovieStyler";
 import PageSwitcher from "./PageSwitcher";
 import Search from "./Search";
 import { isBrowser } from "react-device-detect";
-
-const isBottom = () => {
-  return window.scrollY + window.innerHeight + 1 >= document.body.scrollHeight;
-};
+import { isMobile } from "react-device-detect";
+import MovieDetail from "./MovieDetail";
+import Modal from "./Modal";
+import { isBottom } from "../services/isBottom";
 
 const MovieHolder: React.FC = () => {
   const { state, dispatch } = useContext(Context);
@@ -25,6 +26,7 @@ const MovieHolder: React.FC = () => {
     favoriteMovies,
     searchValue,
     pageNumber,
+    modalMode,
   } = state;
 
   // スマホのスクロール用
@@ -33,7 +35,6 @@ const MovieHolder: React.FC = () => {
     let isSwiping = false;
     const detectTouch = (e: TouchEvent) => {
       if (e.targetTouches.length === 1) {
-        document.body.style.background = "red";
         isSwiping = true;
       }
     };
@@ -50,7 +51,6 @@ const MovieHolder: React.FC = () => {
         !loadingSearch &&
         currentMode === Mode.search
       ) {
-        document.body.style.background = "blue";
         omdbFetch(dispatch, searchValue, false, pageNumber);
       }
       moveDistance = 0;
@@ -68,7 +68,7 @@ const MovieHolder: React.FC = () => {
     return () => {
       document
         .getElementById("movie-container")
-        ?.removeEventListener("touchmove", detectTouch);
+        ?.removeEventListener("touchmove", handleMove);
       document
         .getElementById("movie-container")
         ?.addEventListener("touchstart", detectTouch);
@@ -101,10 +101,12 @@ const MovieHolder: React.FC = () => {
       window.removeEventListener("wheel", scrollToSearch);
     };
   }, [currentMode, dispatch, loadingSearch, pageNumber, searchValue]);
+
   // initial search
   useEffect(() => {
     omdbFetch(dispatch, "man", true);
   }, [dispatch]);
+
   // async の購読解除、アップデート用
   useEffect(() => {
     if (currentUser && dispatch) {
@@ -127,6 +129,7 @@ const MovieHolder: React.FC = () => {
         .catch((e) => console.error(e));
     }
   }, [currentUser, dispatch]);
+
   const showMovies = () => {
     if (errorMessage) {
       return <div className="errorMessage">{errorMessage}</div>;
@@ -148,6 +151,18 @@ const MovieHolder: React.FC = () => {
       }
     );
   };
+
+  const createDetail = () => {
+    if (modalMode === ModalMode.detail) {
+      return (
+        <Modal>
+          <MovieDetail />
+        </Modal>
+      );
+    }
+    return "";
+  };
+
   return (
     <>
       <PageSwitcher showIndex={currentMode === "search" ? 0 : 1}>
@@ -155,6 +170,20 @@ const MovieHolder: React.FC = () => {
         <FavoriteMode />
       </PageSwitcher>
       <MovieStyler>{showMovies()}</MovieStyler>
+      {isMobile ? (
+        <button
+          type="button"
+          id="more-button"
+          onClick={() => {
+            omdbFetch(dispatch, searchValue, false, pageNumber);
+          }}
+        >
+          Scroll-Down or Push Here
+        </button>
+      ) : (
+        ""
+      )}
+      {createDetail()}
     </>
   );
 };

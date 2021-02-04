@@ -15,7 +15,7 @@ const PageSwitcher: React.FC<Props> = (props: Props) => {
         );
       }
       return (
-        <div key={`${index}-hidden`} style={{ display: "none" }}>
+        <div key={`${index}-hidden`} hidden>
           {child}
         </div>
       );
