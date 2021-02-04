@@ -75,6 +75,9 @@ html {
   /* | global */
   color: #0f1419;
 }
+body {
+  width: 100%;
+}
 ul {
   padding: 0 1rem;
 }
@@ -97,6 +100,7 @@ ul li {
   z-index: 999;
   position: fixed;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   top: 0;
@@ -105,9 +109,8 @@ ul li {
   height: 100%;
   background: #000000cc;
 }
-.Modal div {
-  border: 1px rgb(0, 0, 0);
-  background: #eeeeee;
+.Modal > div {
+  border: 1px solid #282c34;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
   margin: 15%;
@@ -275,7 +278,9 @@ input[type="submit"]:hover {
 .favoriteBtn > {
   display: inline-block;
 }
-.favoriteBtn {
+/* .favoriteBtn {
+  border-color: transparent;
+  background: transparent;
   margin-left: auto;
   width: 2.5rem;
   height: 2.5rem;
@@ -289,7 +294,7 @@ input[type="submit"]:hover {
 .favoriteBtn:hover {
   background: #e024607c;
   color: #e0245e7c;
-}
+} */
 
 /* | レスポンシブ */
 @media screen and (min-width: 694px) and (max-width: 915px) {

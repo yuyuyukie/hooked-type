@@ -8,7 +8,7 @@ const Authentication: React.FC = () => {
   const { state, dispatch } = useContext(Context);
   const authMessage = state.authMessage;
   return (
-    <div className="Authenticaion">
+    <div style={{ background: "#eeeeee" }} className="Authenticaion">
       <p style={{ textAlign: "center", fontSize: "1.5rem" }}>{authMessage}</p>
       <ul>
         <li
