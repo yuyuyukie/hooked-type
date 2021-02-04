@@ -36,6 +36,14 @@ const Modal: React.FC<Props> = (props) => {
     // 以下を[modalRoot]にするとcontainerが大量生成されるはず
     //  >> 大丈夫だった。
   }, [modalContainer, modalRoot]);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   if (!modalRoot) {
     return null;
   }
